@@ -1,0 +1,213 @@
+﻿<ManagementPackFragment SchemaVersion="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Templates>
+    <Template ID="Microsoft.IT.SCOM.ASB.Template.ASBNamespaceDiscovery">
+      <Configuration>
+        <xsd:element name="Name" type="xsd:string" />
+        <xsd:element name="Description" type="xsd:string" />
+        <xsd:element name="ASBNamespaceName" type="xsd:string" />
+        <xsd:element name="RunAsAccount" type="xsd:string" />
+        <xsd:element name="ProxyAgentComputerPrincipalName" type="xsd:string" />
+        <xsd:element name="TemplateIdString" type="xsd:string" />
+      </Configuration>
+      <References>
+        <Reference ID="Self" />
+        <Reference ID="System" />
+        <Reference ID="Performance" />
+        <Reference ID="SC" />
+        <Reference ID="SCDW" />
+        <Reference ID="Health" />
+        <Reference ID="Windows" />
+      </References>
+      <Implementation>
+        <TypeDefinitions>
+          <EntityTypes>
+            <ClassTypes>
+              <ClassType ID="Microsoft.IT.SCOM.ASB.Namespace.$TemplateConfig/TemplateIdString$" Accessibility="Internal" Abstract="false" Base="$Reference/Self$Microsoft.IT.SCOM.ASB.Namespace" Hosted="false" Singleton="false" />
+              <ClassType ID="Microsoft.IT.SCOM.ASB.Queue.$TemplateConfig/TemplateIdString$" Accessibility="Internal" Abstract="false" Base="$Reference/Self$Microsoft.IT.SCOM.ASB.Queue" Hosted="true" Singleton="false" />
+              <ClassType ID="Microsoft.IT.SCOM.ASB.Topic.$TemplateConfig/TemplateIdString$" Accessibility="Internal" Abstract="false" Base="$Reference/Self$Microsoft.IT.SCOM.ASB.Topic" Hosted="true" Singleton="false" />
+              <ClassType ID="Microsoft.IT.SCOM.ASB.Subscription.$TemplateConfig/TemplateIdString$" Accessibility="Internal" Abstract="false" Base="$Reference/Self$Microsoft.IT.SCOM.ASB.Subscription" Hosted="true" Singleton="false" />
+            </ClassTypes>
+          </EntityTypes>
+        </TypeDefinitions>
+        <Monitoring>
+          <Discoveries>
+            <Discovery ID="Microsoft.IT.SCOM.ASB.InitialDiscovery.$TemplateConfig/TemplateIdString$" Enabled="onEssentialMonitoring" Target="$Reference/SC$Microsoft.SystemCenter.RootManagementServer" ConfirmDelivery="false" Remotable="false" Priority="Normal">
+              <Category>Discovery</Category>
+              <DiscoveryTypes>
+                <DiscoveryClass TypeID="$Reference/Self$Microsoft.IT.SCOM.ASB.Namespace" />
+                <DiscoveryClass TypeID="Microsoft.IT.SCOM.ASB.Namespace.$TemplateConfig/TemplateIdString$" />
+                <DiscoveryRelationship TypeID="$Reference/SC$Microsoft.SystemCenter.HealthServiceShouldManageEntity" />
+              </DiscoveryTypes>
+              <DataSource ID="DS" TypeID="$Reference/Self$Microsoft.IT.SCOM.ASB.InitialDiscovery.DS">
+                <IntervalSeconds>3600</IntervalSeconds>
+                <ClassId>$MPElement[Name="Microsoft.IT.SCOM.ASB.Namespace.$TemplateConfig/TemplateIdString$"]$</ClassId>
+                <ClassInstanceSettings>
+                  <Settings>
+                    <Setting>
+                      <Name>$MPElement[Name="$Reference/Self$Microsoft.IT.SCOM.ASB.Namespace"]/NamespaceName$</Name>
+                      <Value>$TemplateConfig/ASBNamespaceName$</Value>
+                    </Setting>
+                    <Setting>
+                      <Name>$MPElement[Name="$Reference/System$System.Entity"]/DisplayName$</Name>
+                      <Value>$TemplateConfig/ASBNamespaceName$</Value>
+                    </Setting>
+                  </Settings>
+                </ClassInstanceSettings>
+                <RelationshipId>$MPElement[Name="$Reference/SC$Microsoft.SystemCenter.HealthServiceShouldManageEntity"]$</RelationshipId>
+                <SourceTypeId>$MPElement[Name="$Reference/SC$Microsoft.SystemCenter.HealthService"]$</SourceTypeId>
+                <SourceRoleSettings>
+                  <Settings>
+                    <Setting>
+                      <Name>$MPElement[Name="$Reference/Windows$Microsoft.Windows.Computer"]/PrincipalName$</Name>
+                      <Value>$TemplateConfig/ProxyAgentComputerPrincipalName$</Value>
+                    </Setting>
+                  </Settings>
+                </SourceRoleSettings>
+                <TargetTypeId>$MPElement[Name="Microsoft.IT.SCOM.ASB.Namespace.$TemplateConfig/TemplateIdString$"]$</TargetTypeId>
+                <TargetRoleSettings>
+                  <Settings>
+                    <Setting>
+                      <Name>$MPElement[Name="$Reference/Self$Microsoft.IT.SCOM.ASB.Namespace"]/NamespaceName$</Name>
+                      <Value>$TemplateConfig/ASBNamespaceName$</Value>
+                    </Setting>
+                  </Settings>
+                </TargetRoleSettings>
+              </DataSource>
+            </Discovery>
+            <Discovery ID="Microsoft.IT.SCOM.ASB.QueueDiscovery.$TemplateConfig/TemplateIdString$" Enabled="onEssentialMonitoring" Target="Microsoft.IT.SCOM.ASB.Namespace.$TemplateConfig/TemplateIdString$" ConfirmDelivery="false" Remotable="true" Priority="Normal">
+              <Category>Discovery</Category>
+              <DiscoveryTypes>
+                <DiscoveryClass TypeID="$Reference/Self$Microsoft.IT.SCOM.ASB.Queue" />
+                <DiscoveryClass TypeID="Microsoft.IT.SCOM.ASB.Queue.$TemplateConfig/TemplateIdString$" />
+                <DiscoveryRelationship TypeID="$Reference/Self$Microsoft.IT.SCOM.ASB.Namespace.Hosts.Queue" />
+              </DiscoveryTypes>
+              <DataSource ID="DS" TypeID="$Reference/Self$Microsoft.IT.SCOM.ASB.QueueDiscovery.DS">
+                <IntervalSeconds>3600</IntervalSeconds>
+                <TimeoutSeconds>120</TimeoutSeconds>
+                <SyncTime />
+                <ClassId>$MPElement[Name="Microsoft.IT.SCOM.ASB.Queue.$TemplateConfig/TemplateIdString$"]$</ClassId>
+                <InstanceSettings>
+                  <Settings>
+                    <Setting>
+                      <Name>$MPElement[Name="$Reference/Self$Microsoft.IT.SCOM.ASB.Namespace"]/NamespaceName$</Name>
+                      <Value>$Target/Property[Type="$Reference/Self$Microsoft.IT.SCOM.ASB.Namespace"]/NamespaceName$</Value>
+                    </Setting>
+                    <Setting>
+                      <Name>$MPElement[Name="$Reference/System$System.Entity"]/DisplayName$</Name>
+                      <Value>$Data/Property[@Name='QueueName']$</Value>
+                    </Setting>
+                    <Setting>
+                      <Name>$MPElement[Name="$Reference/Self$Microsoft.IT.SCOM.ASB.Queue"]/QueueName$</Name>
+                      <Value>$Data/Property[@Name='QueueName']$</Value>
+                    </Setting>
+                    <Setting>
+                      <Name>$MPElement[Name="$Reference/Self$Microsoft.IT.SCOM.ASB.Queue"]/MaxSizeInMegaBytes$</Name>
+                      <Value>$Data/Property[@Name='MaxSizeInMegaBytes']$</Value>
+                    </Setting>
+                  </Settings>
+                </InstanceSettings>
+              </DataSource>
+            </Discovery>
+            <Discovery ID="Microsoft.IT.SCOM.ASB.TopicDiscovery.$TemplateConfig/TemplateIdString$" Enabled="onEssentialMonitoring" Target="Microsoft.IT.SCOM.ASB.Namespace.$TemplateConfig/TemplateIdString$" ConfirmDelivery="false" Remotable="true" Priority="Normal">
+              <Category>Discovery</Category>
+              <DiscoveryTypes>
+                <DiscoveryClass TypeID="$Reference/Self$Microsoft.IT.SCOM.ASB.Topic" />
+                <DiscoveryClass TypeID="Microsoft.IT.SCOM.ASB.Topic.$TemplateConfig/TemplateIdString$" />
+                <DiscoveryRelationship TypeID="$Reference/Self$Microsoft.IT.SCOM.ASB.Namespace.Hosts.Topic" />
+              </DiscoveryTypes>
+              <DataSource ID="DS" TypeID="$Reference/Self$Microsoft.IT.SCOM.ASB.TopicDiscovery.DS">
+                <IntervalSeconds>3600</IntervalSeconds>
+                <TimeoutSeconds>120</TimeoutSeconds>
+                <SyncTime />
+                <ClassId>$MPElement[Name="Microsoft.IT.SCOM.ASB.Topic.$TemplateConfig/TemplateIdString$"]$</ClassId>
+                <InstanceSettings>
+                  <Settings>
+                    <Setting>
+                      <Name>$MPElement[Name="$Reference/Self$Microsoft.IT.SCOM.ASB.Namespace"]/NamespaceName$</Name>
+                      <Value>$Target/Property[Type="$Reference/Self$Microsoft.IT.SCOM.ASB.Namespace"]/NamespaceName$</Value>
+                    </Setting>
+                    <Setting>
+                      <Name>$MPElement[Name="$Reference/System$System.Entity"]/DisplayName$</Name>
+                      <Value>$Data/Property[@Name='TopicName']$</Value>
+                    </Setting>
+                    <Setting>
+                      <Name>$MPElement[Name="$Reference/Self$Microsoft.IT.SCOM.ASB.Topic"]/TopicName$</Name>
+                      <Value>$Data/Property[@Name='TopicName']$</Value>
+                    </Setting>
+                    <Setting>
+                      <Name>$MPElement[Name="$Reference/Self$Microsoft.IT.SCOM.ASB.Topic"]/MaxSizeInMegaBytes$</Name>
+                      <Value>$Data/Property[@Name='MaxSizeInMegaBytes']$</Value>
+                    </Setting>
+                  </Settings>
+                </InstanceSettings>
+              </DataSource>
+            </Discovery>
+            <Discovery ID="Microsoft.IT.SCOM.ASB.SubscriptionDiscovery.$TemplateConfig/TemplateIdString$" Enabled="onEssentialMonitoring" Target="Microsoft.IT.SCOM.ASB.Topic.$TemplateConfig/TemplateIdString$" ConfirmDelivery="false" Remotable="true" Priority="Normal">
+              <Category>Discovery</Category>
+              <DiscoveryTypes>
+                <DiscoveryClass TypeID="$Reference/Self$Microsoft.IT.SCOM.ASB.Subscription" />
+                <DiscoveryClass TypeID="Microsoft.IT.SCOM.ASB.Subscription.$TemplateConfig/TemplateIdString$" />
+                <DiscoveryRelationship TypeID="$Reference/Self$Microsoft.IT.SCOM.ASB.Topic.Hosts.Subscription" />
+              </DiscoveryTypes>
+              <DataSource ID="DS" TypeID="$Reference/Self$Microsoft.IT.SCOM.ASB.SubscriptionDiscovery.DS">
+                <IntervalSeconds>3600</IntervalSeconds>
+                <TimeoutSeconds>120</TimeoutSeconds>
+                <SyncTime />
+                <ClassId>$MPElement[Name="Microsoft.IT.SCOM.ASB.Subscription.$TemplateConfig/TemplateIdString$"]$</ClassId>
+                <InstanceSettings>
+                  <Settings>
+                    <Setting>
+                      <Name>$MPElement[Name="$Reference/Self$Microsoft.IT.SCOM.ASB.Namespace"]/NamespaceName$</Name>
+                      <Value>$Target/Host/Property[Type="$Reference/Self$Microsoft.IT.SCOM.ASB.Namespace"]/NamespaceName$</Value>
+                    </Setting>
+                    <Setting>
+                      <Name>$MPElement[Name="$Reference/Self$Microsoft.IT.SCOM.ASB.Topic"]/TopicName$</Name>
+                      <Value>$Target/Property[Type="$Reference/Self$Microsoft.IT.SCOM.ASB.Topic"]/TopicName$</Value>
+                    </Setting>
+                    <Setting>
+                      <Name>$MPElement[Name="$Reference/System$System.Entity"]/DisplayName$</Name>
+                      <Value>$Data/Property[@Name='SubscriptionName']$</Value>
+                    </Setting>
+                    <Setting>
+                      <Name>$MPElement[Name="$Reference/Self$Microsoft.IT.SCOM.ASB.Subscription"]/SubscriptionName$</Name>
+                      <Value>$Data/Property[@Name='SubscriptionName']$</Value>
+                    </Setting>
+                  </Settings>
+                </InstanceSettings>
+              </DataSource>
+            </Discovery>
+          </Discoveries>
+          <Overrides>
+            <SecureReferenceOverride ID="Microsoft.IT.SCOM.ASB.RunAsProfile.Account.$TemplateConfig/TemplateIdString$.Override" Context="Microsoft.IT.SCOM.ASB.Namespace.$TemplateConfig/TemplateIdString$" Enforced="false" SecureReference="$Reference/Self$Microsoft.IT.SCOM.ASB.RunAsProfile.Account">
+              <Value>$TemplateConfig/RunAsAccount$</Value>
+            </SecureReferenceOverride>
+          </Overrides>
+        </Monitoring>
+        <!--
+        <LanguagePacks>
+          <LanguagePack ID="ENU" IsDefault="true">
+            <DisplayStrings>
+              <DisplayString ElementID="MS.IT.Ops.SCOM.SQLAzure.SQLAzureServer.$TemplateConfig/TemplateIdString$">
+                <Name>Microsoft IT SQL Azure Hosted SQL Server ($TemplateConfig/HostedServiceName$)</Name>
+                <Description>Microsoft IT SQL Azure Hosted SQL Server Class created by template $TemplateConfig/Name$ ($TemplateConfig/TemplateIdString$)</Description>
+              </DisplayString>
+              <DisplayString ElementID="MS.IT.Ops.SCOM.SQLAzure.SQLAzureServer.Discovery.$TemplateConfig/TemplateIdString$">
+                <Name>Microsoft IT SQL Azure Discovery ($TemplateConfig/SqlAzureServerName$)</Name>
+                <Description>Microsoft IT SQL Azure Discovery created by $TemplateConfig/Name$ ($TemplateConfig/TemplateIdString$)</Description>
+              </DisplayString>
+              <DisplayString ElementID="MS.IT.Ops.SCOM.SQLAzure.SQLAzureDatabase.Master.$TemplateConfig/TemplateIdString$">
+                <Name>SQL Azure Master AzureDatabase ($TemplateConfig/HostedServiceName$)</Name>
+                <Description>Microsoft IT SQL Azure Master Database Class created by template $TemplateConfig/Name$ ($TemplateConfig/TemplateIdString$)</Description>
+              </DisplayString>
+              <DisplayString ElementID="MS.IT.Ops.SCOM.SQLAzure.SQLAzureDatabase.User.$TemplateConfig/TemplateIdString$">
+                <Name>SQL Azure User AzureDatabase ($TemplateConfig/HostedServiceName$)</Name>
+                <Description>Microsoft IT SQL Azure User Database Class created by template $TemplateConfig/Name$ ($TemplateConfig/TemplateIdString$)</Description>
+              </DisplayString>
+            </DisplayStrings>
+          </LanguagePack>
+        </LanguagePacks>
+        -->
+      </Implementation>
+    </Template>
+  </Templates>
+</ManagementPackFragment>

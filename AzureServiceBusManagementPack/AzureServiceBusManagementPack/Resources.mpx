@@ -1,0 +1,6 @@
+﻿<ManagementPackFragment SchemaVersion="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Resources>
+    <Assembly ID="Microsoft.IT.SCOM.ASB.UI" Accessibility="Public" FileName="Microsoft.IT.SCOM.ASB.UI.dll" HasNullStream="false" QualifiedName="Microsoft.IT.SCOM.ASB.UI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"></Assembly>
+    <DeployableAssembly ID="Microsoft.ServiceBus" Accessibility="Public" FileName="Microsoft.ServiceBus.dll" HasNullStream="false" QualifiedName="Microsoft.ServiceBus, Microsoft.ServiceBus, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"></DeployableAssembly>    
+  </Resources>
+</ManagementPackFragment>

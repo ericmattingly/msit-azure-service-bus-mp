@@ -1,0 +1,168 @@
+﻿<ManagementPackFragment SchemaVersion="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <PresentationTypes>
+    <UIPages>
+      <UIPage ID="Microsoft.IT.SCOM.ASB.TemplatePage.ASBNamespaceDiscovery.InputParser" Accessibility="Internal">
+        <Implementation>
+          <Assembly>Microsoft.IT.SCOM.ASB.UI</Assembly>
+          <Type>Microsoft.IT.SCOM.ASB.UI.InputParser</Type>
+        </Implementation>
+      </UIPage>
+      <UIPage ID="Microsoft.IT.SCOM.ASB.TemplatePage.ASBNamespaceDiscovery.ProxyAgent" Accessibility="Public">
+        <Implementation>
+          <Assembly>Microsoft.IT.SCOM.ASB.UI</Assembly>
+          <Type>Microsoft.IT.SCOM.ASB.UI.ProxyAgent</Type>
+        </Implementation>
+      </UIPage>
+      <UIPage ID="Microsoft.IT.SCOM.ASB.TemplatePage.ASBNamespaceDiscovery.ASBNamespaceDetails" Accessibility="Public">
+        <Implementation>
+          <Assembly>Microsoft.IT.SCOM.ASB.UI</Assembly>
+          <Type>Microsoft.IT.SCOM.ASB.UI.ASBNamespaceDetails</Type>
+        </Implementation>
+      </UIPage>
+      <UIPage ID="Microsoft.IT.SCOM.ASB.TemplatePage.ASBNamespaceDiscovery.Summary" Accessibility="Public">
+        <Implementation>
+          <Assembly>Microsoft.IT.SCOM.ASB.UI</Assembly>
+          <Type>Microsoft.IT.SCOM.ASB.UI.Summary</Type>
+        </Implementation>
+      </UIPage>
+    </UIPages>
+    <UIPageSets>
+      <UIPageSet ID="Microsoft.IT.SCOM.ASB.TemplatePageSet.ASBNamespaceDiscovery" TypeDefinitionID="Microsoft.IT.SCOM.ASB.Template.ASBNamespaceDiscovery">
+        <UIPageReferences>
+          <UIPageReference ID="Microsoft.IT.SCOM.ASB.TemplatePageSet.ASBNamespaceDiscovery.NameAndDescription" PageID="System!System.NameAndDescriptionPage" Usage="CreationAndUpdate">
+            <InputTransform>
+              <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                <xsl:output method="xml" indent="yes" omit-xml-declaration="yes" />
+                <xsl:template match="/">
+                  <xsl:element name="Name">
+                    <xsl:value-of select="//Name" />
+                  </xsl:element>
+                  <xsl:element name="Description">
+                    <xsl:value-of select="//Description" />
+                  </xsl:element>
+                </xsl:template>
+              </xsl:stylesheet>
+            </InputTransform>
+            <Title ID="Title" />
+            <SubTitle ID="SubTitle" />
+            <TabName ID="TabName" />
+          </UIPageReference>
+          <UIPageReference ID="Microsoft.IT.SCOM.ASB.TemplatePageSet.ASBNamespaceDiscovery.ASBNamespaceDetails" PageID="Microsoft.IT.SCOM.ASB.TemplatePage.ASBNamespaceDiscovery.ASBNamespaceDetails" Usage="CreationAndUpdate">
+            <InputTransform>
+              <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                <xsl:output method="xml" indent="yes" omit-xml-declaration="yes" />
+                <xsl:template match="/">
+                  <xsl:element name="ASBNamespaceName">
+                    <xsl:value-of select="//ASBNamespaceName" />
+                  </xsl:element>
+                  <xsl:element name="RunAsAccount">
+                    <xsl:value-of select="//RunAsAccount" />
+                  </xsl:element>
+                </xsl:template>
+              </xsl:stylesheet>
+            </InputTransform>
+            <Title ID="Title" />
+            <SubTitle ID="SubTitle" />
+            <TabName ID="TabName" />
+          </UIPageReference>
+          <UIPageReference ID="Microsoft.IT.SCOM.ASB.TemplatePageSet.ASBNamespaceDiscovery.ProxyAgent" PageID="Microsoft.IT.SCOM.ASB.TemplatePage.ASBNamespaceDiscovery.ProxyAgent" Usage="CreationAndUpdate">
+            <InputTransform>
+              <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                <xsl:output method="xml" indent="yes" omit-xml-declaration="yes" />
+                <xsl:template match="/">
+                  <xsl:element name="ProxyAgentComputerPrincipalName">
+                    <xsl:value-of select="//ProxyAgentComputerPrincipalName" />
+                  </xsl:element>
+                  <xsl:element name="TemplateIdString">
+                    <xsl:value-of select="//TemplateIdString" />
+                  </xsl:element>
+                </xsl:template>
+              </xsl:stylesheet>
+            </InputTransform>
+            <Title ID="Title" />
+            <SubTitle ID="SubTitle" />
+            <TabName ID="TabName" />
+          </UIPageReference>
+          <UIPageReference ID="Microsoft.IT.SCOM.ASB.TemplatePageSet.ASBNamespaceDiscovery.Summary" PageID="Microsoft.IT.SCOM.ASB.TemplatePage.ASBNamespaceDiscovery.Summary" Usage="CreationOnly">
+            <Title ID="Title" />
+            <SubTitle ID="SubTitle" />
+            <TabName ID="TabName" />
+          </UIPageReference>
+        </UIPageReferences>
+        <OutputTransform>
+          <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+            <xsl:output method="xml" indent="yes" omit-xml-declaration="yes" />
+            <xsl:template match="/">
+              <xsl:element name="Configuration">
+                <xsl:element name="Name">
+                  <xsl:value-of select="/Name" />
+                </xsl:element>
+                <xsl:element name="Description">
+                  <xsl:value-of select="/Description" />
+                </xsl:element>
+                <xsl:element name="ASBNamespaceName">
+                  <xsl:value-of select="/ASBNamespaceName" />
+                </xsl:element>
+                <xsl:element name="RunAsAccount">
+                  <xsl:value-of select="/RunAsAccount" />
+                </xsl:element>
+                <xsl:element name="ProxyAgentComputerPrincipalName">
+                  <xsl:value-of select="/ProxyAgentComputerPrincipalName" />
+                </xsl:element>
+                <xsl:element name="TemplateIdString">
+                  <xsl:value-of select="/TemplateIdString" />
+                </xsl:element>
+              </xsl:element>
+            </xsl:template>
+          </xsl:stylesheet>
+        </OutputTransform>
+      </UIPageSet>
+    </UIPageSets>
+  </PresentationTypes>
+  <LanguagePacks>
+    <LanguagePack ID="ENU" IsDefault="true">
+      <DisplayStrings>
+        <DisplayString ElementID="Microsoft.IT.SCOM.ASB.Template.ASBNamespaceDiscovery">
+          <Name>Microsoft IT Windows Azure Service Bus</Name>
+          <Description>This template allows you to monitor Windows Azure Service Bus.</Description>
+        </DisplayString>
+        <DisplayString ElementID="Microsoft.IT.SCOM.ASB.TemplatePageSet.ASBNamespaceDiscovery.NameAndDescription" SubElementID="SubTitle">
+          <Name>Name and Description</Name>
+        </DisplayString>
+        <DisplayString ElementID="Microsoft.IT.SCOM.ASB.TemplatePageSet.ASBNamespaceDiscovery.NameAndDescription" SubElementID="TabName">
+          <Name>General</Name>
+        </DisplayString>
+        <DisplayString ElementID="Microsoft.IT.SCOM.ASB.TemplatePageSet.ASBNamespaceDiscovery.NameAndDescription" SubElementID="Title">
+          <Name>General Properties</Name>
+        </DisplayString>
+        <DisplayString ElementID="Microsoft.IT.SCOM.ASB.TemplatePageSet.ASBNamespaceDiscovery.ProxyAgent" SubElementID="SubTitle">
+          <Name>Select Proxy Agent</Name>
+        </DisplayString>
+        <DisplayString ElementID="Microsoft.IT.SCOM.ASB.TemplatePageSet.ASBNamespaceDiscovery.ProxyAgent" SubElementID="TabName">
+          <Name>Proxy Agent</Name>
+        </DisplayString>
+        <DisplayString ElementID="Microsoft.IT.SCOM.ASB.TemplatePageSet.ASBNamespaceDiscovery.ProxyAgent" SubElementID="Title">
+          <Name>Proxy Agent</Name>
+        </DisplayString>
+        <DisplayString ElementID="Microsoft.IT.SCOM.ASB.TemplatePageSet.ASBNamespaceDiscovery.ASBNamespaceDetails" SubElementID="SubTitle">
+          <Name>Windows Azure Service Bus Namespace Details</Name>
+        </DisplayString>
+        <DisplayString ElementID="Microsoft.IT.SCOM.ASB.TemplatePageSet.ASBNamespaceDiscovery.ASBNamespaceDetails" SubElementID="TabName">
+          <Name>Windows Azure Service Bus Namespace Details</Name>
+        </DisplayString>
+        <DisplayString ElementID="Microsoft.IT.SCOM.ASB.TemplatePageSet.ASBNamespaceDiscovery.ASBNamespaceDetails" SubElementID="Title">
+          <Name>Windows Azure Service Bus Namespace Details</Name>
+        </DisplayString>
+        <DisplayString ElementID="Microsoft.IT.SCOM.ASB.TemplatePageSet.ASBNamespaceDiscovery.Summary" SubElementID="SubTitle">
+          <Name>Summary</Name>
+        </DisplayString>
+        <DisplayString ElementID="Microsoft.IT.SCOM.ASB.TemplatePageSet.ASBNamespaceDiscovery.Summary" SubElementID="TabName">
+          <Name>Summary</Name>
+        </DisplayString>
+        <DisplayString ElementID="Microsoft.IT.SCOM.ASB.TemplatePageSet.ASBNamespaceDiscovery.Summary" SubElementID="Title">
+          <Name>Summary</Name>
+        </DisplayString>
+      </DisplayStrings>
+    </LanguagePack>
+  </LanguagePacks>
+</ManagementPackFragment>

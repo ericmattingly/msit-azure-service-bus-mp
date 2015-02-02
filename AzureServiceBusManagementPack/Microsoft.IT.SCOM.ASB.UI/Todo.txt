@@ -1,0 +1,18 @@
+﻿make it work with resource pool
+check all interval settings 
+clean up views, look at sql management pack
+
+test for bugs
+ 
+add relay
+
+
+collect message count as performance counter
+
+New Monitors
+	Sizeinbytes getting close to maxsizeinbytes
+
+Debugging PowerShell:
+
+You need to be on a SCOM Management server for the calls to Mom.ScriptAPI to work.  
+To debug, you must edit in the IDE but run the script manaully through the powershell command box

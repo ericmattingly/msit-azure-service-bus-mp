@@ -1,0 +1,1172 @@
+﻿<ManagementPackFragment SchemaVersion="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <TypeDefinitions>
+    <ModuleTypes>
+      <DataSourceModuleType ID="Microsoft.IT.SCOM.ASB.Queue.Monitoring.DS" Accessibility="Public" Batching="false">
+        <Configuration>
+          <xsd:element minOccurs="0" maxOccurs="1" name="IntervalSeconds" type="xsd:integer" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="TimeoutSeconds" type="xsd:integer" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="SyncTime" type="xsd:string" />
+        </Configuration>
+        <OverrideableParameters>
+          <OverrideableParameter ID="IntervalSeconds" Selector="$Config/IntervalSeconds$" ParameterType="int" />
+          <OverrideableParameter ID="TimeoutSeconds" Selector="$Config/TimeoutSeconds$" ParameterType="int" />          
+        </OverrideableParameters>
+        <ModuleImplementation Isolation="Any">
+          <Composite>
+            <MemberModules>
+              <DataSource ID="Scheduler" TypeID="System!System.SimpleScheduler">
+                <IntervalSeconds>$Config/IntervalSeconds$</IntervalSeconds>
+                <SyncTime>$Config/SyncTime$</SyncTime>
+              </DataSource>
+              <ProbeAction ID="Probe" TypeID="Windows!Microsoft.Windows.PowerShellPropertyBagProbe">
+                <ScriptName>QueueMonitoring.ps1</ScriptName>
+                <ScriptBody>$IncludeFileContent/Scripts/Queue/QueueMonitoring.ps1$</ScriptBody>
+                <Parameters>
+                  <Parameter>
+                    <Name>namespaceName</Name>
+                    <Value>$Target/Host/Property[Type="Microsoft.IT.SCOM.ASB.Namespace"]/NamespaceName$</Value>
+                  </Parameter>
+                  <Parameter>
+                    <Name>password</Name>
+                    <Value>$RunAs[Name="Microsoft.IT.SCOM.ASB.RunAsProfile.Account"]/Password$</Value>
+                  </Parameter>
+                  <Parameter>
+                    <Name>assemblyLocation</Name>
+                    <Value>$FileResource[Name="Microsoft.ServiceBus"]/Path$</Value>
+                  </Parameter>
+                  <Parameter>
+                    <Name>queueName</Name>
+                    <Value>$Target/Property[Type="Microsoft.IT.SCOM.ASB.Queue"]/QueueName$</Value>
+                  </Parameter>
+                </Parameters>
+                <TimeoutSeconds>$Config/TimeoutSeconds$</TimeoutSeconds>
+              </ProbeAction>
+            </MemberModules>
+            <Composition>
+              <Node ID="Probe">
+                <Node ID="Scheduler" />
+              </Node>
+            </Composition>
+          </Composite>
+        </ModuleImplementation>
+        <OutputType>System!System.PropertyBagData</OutputType>
+      </DataSourceModuleType>     
+      <DataSourceModuleType ID="Microsoft.IT.SCOM.ASB.Topic.Monitoring.DS" Accessibility="Public" Batching="false">
+        <Configuration>
+          <xsd:element minOccurs="0" maxOccurs="1" name="IntervalSeconds" type="xsd:integer" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="TimeoutSeconds" type="xsd:integer" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="SyncTime" type="xsd:string" />
+        </Configuration>
+        <OverrideableParameters>
+          <OverrideableParameter ID="IntervalSeconds" Selector="$Config/IntervalSeconds$" ParameterType="int" />
+          <OverrideableParameter ID="TimeoutSeconds" Selector="$Config/TimeoutSeconds$" ParameterType="int" />          
+        </OverrideableParameters>
+        <ModuleImplementation Isolation="Any">
+          <Composite>
+            <MemberModules>
+              <DataSource ID="Scheduler" TypeID="System!System.SimpleScheduler">
+                <IntervalSeconds>$Config/IntervalSeconds$</IntervalSeconds>
+                <SyncTime>$Config/SyncTime$</SyncTime>
+              </DataSource>
+              <ProbeAction ID="Probe" TypeID="Windows!Microsoft.Windows.PowerShellPropertyBagProbe">
+                <ScriptName>TopicMonitoring.ps1</ScriptName>
+                <ScriptBody>$IncludeFileContent/Scripts/Topic/TopicMonitoring.ps1$</ScriptBody>
+                <Parameters>
+                  <Parameter>
+                    <Name>namespaceName</Name>
+                    <Value>$Target/Host/Property[Type="Microsoft.IT.SCOM.ASB.Namespace"]/NamespaceName$</Value>
+                  </Parameter>
+                  <Parameter>
+                    <Name>password</Name>
+                    <Value>$RunAs[Name="Microsoft.IT.SCOM.ASB.RunAsProfile.Account"]/Password$</Value>
+                  </Parameter>
+                  <Parameter>
+                    <Name>assemblyLocation</Name>
+                    <Value>$FileResource[Name="Microsoft.ServiceBus"]/Path$</Value>
+                  </Parameter>
+                  <Parameter>
+                    <Name>topicName</Name>
+                    <Value>$Target/Property[Type="Microsoft.IT.SCOM.ASB.Topic"]/TopicName$</Value>
+                  </Parameter>
+                </Parameters>
+                <TimeoutSeconds>$Config/TimeoutSeconds$</TimeoutSeconds>
+              </ProbeAction>
+            </MemberModules>
+            <Composition>
+              <Node ID="Probe">
+                <Node ID="Scheduler" />
+              </Node>
+            </Composition>
+          </Composite>
+        </ModuleImplementation>
+        <OutputType>System!System.PropertyBagData</OutputType>
+      </DataSourceModuleType>      
+      <DataSourceModuleType ID="Microsoft.IT.SCOM.ASB.Subscription.Monitoring.DS" Accessibility="Public" Batching="false">
+        <Configuration>
+          <xsd:element minOccurs="0" maxOccurs="1" name="IntervalSeconds" type="xsd:integer" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="TimeoutSeconds" type="xsd:integer" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="SyncTime" type="xsd:string" />
+        </Configuration>
+        <OverrideableParameters>
+          <OverrideableParameter ID="IntervalSeconds" Selector="$Config/IntervalSeconds$" ParameterType="int" />
+          <OverrideableParameter ID="TimeoutSeconds" Selector="$Config/TimeoutSeconds$" ParameterType="int" />          
+        </OverrideableParameters>
+        <ModuleImplementation Isolation="Any">
+          <Composite>
+            <MemberModules>
+              <DataSource ID="Scheduler" TypeID="System!System.SimpleScheduler">
+                <IntervalSeconds>$Config/IntervalSeconds$</IntervalSeconds>
+                <SyncTime>$Config/SyncTime$</SyncTime>
+              </DataSource>
+              <ProbeAction ID="Probe" TypeID="Windows!Microsoft.Windows.PowerShellPropertyBagProbe">
+                <ScriptName>SubscriptionMonitoring.ps1</ScriptName>
+                <ScriptBody>$IncludeFileContent/Scripts/Subscription/SubscriptionMonitoring.ps1$</ScriptBody>
+                <Parameters>
+                  <Parameter>
+                    <Name>namespaceName</Name>
+                    <Value>$Target/Host/Host/Property[Type="Microsoft.IT.SCOM.ASB.Namespace"]/NamespaceName$</Value>
+                  </Parameter>
+                  <Parameter>
+                    <Name>password</Name>
+                    <Value>$RunAs[Name="Microsoft.IT.SCOM.ASB.RunAsProfile.Account"]/Password$</Value>
+                  </Parameter>
+                  <Parameter>
+                    <Name>assemblyLocation</Name>
+                    <Value>$FileResource[Name="Microsoft.ServiceBus"]/Path$</Value>
+                  </Parameter>
+                  <Parameter>
+                    <Name>topicName</Name>
+                    <Value>$Target/Host/Property[Type="Microsoft.IT.SCOM.ASB.Topic"]/TopicName$</Value>
+                  </Parameter>
+                  <Parameter>
+                    <Name>subscriptionName</Name>
+                    <Value>$Target/Property[Type="Microsoft.IT.SCOM.ASB.Subscription"]/SubscriptionName$</Value>
+                  </Parameter>
+                </Parameters>
+                <TimeoutSeconds>$Config/TimeoutSeconds$</TimeoutSeconds>
+              </ProbeAction>
+            </MemberModules>
+            <Composition>
+              <Node ID="Probe">
+                <Node ID="Scheduler" />
+              </Node>
+            </Composition>
+          </Composite>
+        </ModuleImplementation>
+        <OutputType>System!System.PropertyBagData</OutputType>
+      </DataSourceModuleType>     
+    </ModuleTypes>
+    <MonitorTypes>
+      <UnitMonitorType ID="Microsoft.IT.SCOM.ASB.Queue.Monitor.Enabled.MonitorType" Accessibility="Internal" >
+        <MonitorTypeStates>
+          <MonitorTypeState ID="Healthy" NoDetection="false" />
+          <MonitorTypeState ID="Warning" NoDetection="false" />
+          <MonitorTypeState ID="Critical" NoDetection="false" />
+        </MonitorTypeStates>
+        <Configuration>
+          <xsd:element minOccurs="0" maxOccurs="1" name="IntervalSeconds" type="xsd:integer" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="TimeoutSeconds" type="xsd:integer" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="SyncTime" type="xsd:string" />
+        </Configuration>
+        <OverrideableParameters>
+          <OverrideableParameter ID="IntervalSeconds" Selector="$Config/IntervalSeconds$" ParameterType="int" />
+          <OverrideableParameter ID="TimeoutSeconds" Selector="$Config/TimeoutSeconds$" ParameterType="int" />
+        </OverrideableParameters>
+        <MonitorImplementation>
+          <MemberModules>
+            <DataSource ID="QueueProbe" TypeID="Microsoft.IT.SCOM.ASB.Queue.Monitoring.DS">
+              <IntervalSeconds>$Config/IntervalSeconds$</IntervalSeconds>
+              <TimeoutSeconds>$Config/TimeoutSeconds$</TimeoutSeconds>
+            </DataSource>
+            <ConditionDetection ID="CDHealthy" TypeID="System!System.ExpressionFilter">
+              <Expression>
+                <SimpleExpression>
+                  <ValueExpression>
+                    <XPathQuery Type="String">Property[@Name='Status']</XPathQuery>
+                  </ValueExpression>
+                  <Operator>Equal</Operator>
+                  <ValueExpression>
+                    <Value Type="String">Active</Value>
+                  </ValueExpression>
+                </SimpleExpression>
+              </Expression>
+            </ConditionDetection>
+            <ConditionDetection ID="CDWarning" TypeID="System!System.ExpressionFilter">
+              <Expression>
+                <Or>
+                  <Expression>
+                    <SimpleExpression>
+                      <ValueExpression>
+                        <XPathQuery Type="String">Property[@Name='Status']</XPathQuery>
+                      </ValueExpression>
+                      <Operator>Equal</Operator>
+                      <ValueExpression>
+                        <Value Type="String">SendDisabled</Value>
+                      </ValueExpression>
+                    </SimpleExpression>
+                  </Expression>
+                  <Expression>
+                    <SimpleExpression>
+                      <ValueExpression>
+                        <XPathQuery Type="String">Property[@Name='Status']</XPathQuery>
+                      </ValueExpression>
+                      <Operator>Equal</Operator>
+                      <ValueExpression>
+                        <Value Type="String">ReceiveDisabled</Value>
+                      </ValueExpression>
+                    </SimpleExpression>
+                  </Expression>
+                </Or>
+              </Expression>
+            </ConditionDetection>
+            <ConditionDetection ID="CDCritical" TypeID="System!System.ExpressionFilter">
+              <Expression>
+                <SimpleExpression>
+                  <ValueExpression>
+                    <XPathQuery Type="String">Property[@Name='Status']</XPathQuery>
+                  </ValueExpression>
+                  <Operator>Equal</Operator>
+                  <ValueExpression>
+                    <Value Type="String">Disabled</Value>
+                  </ValueExpression>
+                </SimpleExpression>
+              </Expression>
+            </ConditionDetection>
+          </MemberModules>
+          <RegularDetections>
+            <RegularDetection MonitorTypeStateID="Healthy">
+              <Node ID="CDHealthy">
+                <Node ID="QueueProbe" />
+              </Node>
+            </RegularDetection>
+            <RegularDetection MonitorTypeStateID="Warning">
+              <Node ID="CDWarning">
+                <Node ID="QueueProbe" />
+              </Node>
+            </RegularDetection>
+            <RegularDetection MonitorTypeStateID="Critical">
+              <Node ID="CDCritical">
+                <Node ID="QueueProbe" />
+              </Node>
+            </RegularDetection>
+          </RegularDetections>
+        </MonitorImplementation>
+      </UnitMonitorType>
+      <UnitMonitorType ID="Microsoft.IT.SCOM.ASB.Queue.Monitor.MessageCount.MonitorType" Accessibility="Internal" >
+        <MonitorTypeStates>
+          <MonitorTypeState ID="Healthy" NoDetection="false" />
+          <MonitorTypeState ID="Critical" NoDetection="false" />
+        </MonitorTypeStates>
+        <Configuration>
+          <xsd:element minOccurs="0" maxOccurs="1" name="IntervalSeconds" type="xsd:integer" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="TimeoutSeconds" type="xsd:integer" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="MessageCountThreshold" type="xsd:integer" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="SyncTime" type="xsd:string" />
+        </Configuration>
+        <OverrideableParameters>
+          <OverrideableParameter ID="IntervalSeconds" Selector="$Config/IntervalSeconds$" ParameterType="int" />
+          <OverrideableParameter ID="TimeoutSeconds" Selector="$Config/TimeoutSeconds$" ParameterType="int" />
+          <OverrideableParameter ID="MessageCountThreshold" Selector="$Config/MessageCountThreshold$" ParameterType="int" />
+        </OverrideableParameters>
+        <MonitorImplementation>
+          <MemberModules>
+            <DataSource ID="QueueProbe" TypeID="Microsoft.IT.SCOM.ASB.Queue.Monitoring.DS">
+              <IntervalSeconds>$Config/IntervalSeconds$</IntervalSeconds>
+              <TimeoutSeconds>$Config/TimeoutSeconds$</TimeoutSeconds>
+            </DataSource>
+            <ConditionDetection ID="CDHealthy" TypeID="System!System.ExpressionFilter">
+              <Expression>
+                <SimpleExpression>
+                  <ValueExpression>
+                    <XPathQuery Type="Integer">Property[@Name='MessageCount']</XPathQuery>
+                  </ValueExpression>
+                  <Operator>Less</Operator>
+                  <ValueExpression>
+                    <Value Type="Integer">$Config/MessageCountThreshold$</Value>
+                  </ValueExpression>
+                </SimpleExpression>
+              </Expression>
+            </ConditionDetection>
+            <ConditionDetection ID="CDCritical" TypeID="System!System.ExpressionFilter">
+              <Expression>
+                <SimpleExpression>
+                  <ValueExpression>
+                    <XPathQuery Type="Integer">Property[@Name='MessageCount']</XPathQuery>
+                  </ValueExpression>
+                  <Operator>GreaterEqual</Operator>
+                  <ValueExpression>
+                    <Value Type="Integer">$Config/MessageCountThreshold$</Value>
+                  </ValueExpression>
+                </SimpleExpression>
+              </Expression>
+            </ConditionDetection>
+          </MemberModules>
+          <RegularDetections>
+            <RegularDetection MonitorTypeStateID="Healthy">
+              <Node ID="CDHealthy">
+                <Node ID="QueueProbe" />
+              </Node>
+            </RegularDetection>
+            <RegularDetection MonitorTypeStateID="Critical">
+              <Node ID="CDCritical">
+                <Node ID="QueueProbe" />
+              </Node>
+            </RegularDetection>
+          </RegularDetections>
+        </MonitorImplementation>
+      </UnitMonitorType>
+      <UnitMonitorType ID="Microsoft.IT.SCOM.ASB.Queue.Monitor.OldMessages.MonitorType" Accessibility="Internal" >
+        <MonitorTypeStates>
+          <MonitorTypeState ID="Healthy" NoDetection="false" />
+          <MonitorTypeState ID="Critical" NoDetection="false" />
+        </MonitorTypeStates>
+        <Configuration>
+          <xsd:element minOccurs="0" maxOccurs="1" name="IntervalSeconds" type="xsd:integer" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="TimeoutSeconds" type="xsd:integer" />          
+          <xsd:element minOccurs="0" maxOccurs="1" name="SyncTime" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="MinutesOld" type="xsd:integer" />
+        </Configuration>
+        <OverrideableParameters>
+          <OverrideableParameter ID="IntervalSeconds" Selector="$Config/IntervalSeconds$" ParameterType="int" />
+          <OverrideableParameter ID="TimeoutSeconds" Selector="$Config/TimeoutSeconds$" ParameterType="int" />
+          <OverrideableParameter ID="MinutesOld" Selector="$Config/MinutesOld$" ParameterType="int" />
+        </OverrideableParameters>
+        <MonitorImplementation>
+          <MemberModules>
+            <DataSource ID="QueueProbe" TypeID="Microsoft.IT.SCOM.ASB.Queue.Monitoring.DS">
+              <IntervalSeconds>$Config/IntervalSeconds$</IntervalSeconds>
+              <TimeoutSeconds>$Config/TimeoutSeconds$</TimeoutSeconds>
+            </DataSource>
+            <ConditionDetection ID="CDHealthy" TypeID="System!System.ExpressionFilter">
+              <Expression>
+                <SimpleExpression>
+                  <ValueExpression>
+                    <XPathQuery Type="Integer">Property[@Name='OldMessageMinutes']</XPathQuery>
+                  </ValueExpression>
+                  <Operator>Less</Operator>
+                  <ValueExpression>
+                    <Value Type="Integer">$Config/MinutesOld$</Value>
+                  </ValueExpression>
+                </SimpleExpression>
+              </Expression>
+            </ConditionDetection>
+            <ConditionDetection ID="CDCritical" TypeID="System!System.ExpressionFilter">
+              <Expression>
+                <SimpleExpression>
+                  <ValueExpression>
+                    <XPathQuery Type="String">Property[@Name='OldMessageMinutes']</XPathQuery>
+                  </ValueExpression>
+                  <Operator>GreaterEqual</Operator>
+                  <ValueExpression>
+                    <Value Type="Integer">$Config/MinutesOld$</Value>
+                  </ValueExpression>
+                </SimpleExpression>
+              </Expression>
+            </ConditionDetection>
+          </MemberModules>
+          <RegularDetections>
+            <RegularDetection MonitorTypeStateID="Healthy">
+              <Node ID="CDHealthy">
+                <Node ID="QueueProbe" />
+              </Node>
+            </RegularDetection>
+            <RegularDetection MonitorTypeStateID="Critical">
+              <Node ID="CDCritical">
+                <Node ID="QueueProbe" />
+              </Node>
+            </RegularDetection>
+          </RegularDetections>
+        </MonitorImplementation>
+      </UnitMonitorType>
+      <UnitMonitorType ID="Microsoft.IT.SCOM.ASB.Queue.Monitor.DeadLetterQueue.MonitorType" Accessibility="Internal" >
+        <MonitorTypeStates>
+          <MonitorTypeState ID="Healthy" NoDetection="false" />
+          <MonitorTypeState ID="Critical" NoDetection="false" />
+        </MonitorTypeStates>
+        <Configuration>
+          <xsd:element minOccurs="0" maxOccurs="1" name="IntervalSeconds" type="xsd:integer" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="TimeoutSeconds" type="xsd:integer" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="MessageCountThreshold" type="xsd:integer" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="SyncTime" type="xsd:string" />
+        </Configuration>
+        <OverrideableParameters>
+          <OverrideableParameter ID="IntervalSeconds" Selector="$Config/IntervalSeconds$" ParameterType="int" />
+          <OverrideableParameter ID="TimeoutSeconds" Selector="$Config/TimeoutSeconds$" ParameterType="int" />
+          <OverrideableParameter ID="MessageCountThreshold" Selector="$Config/MessageCountThreshold$" ParameterType="int" />
+        </OverrideableParameters>
+        <MonitorImplementation>
+          <MemberModules>
+            <DataSource ID="QueueProbe" TypeID="Microsoft.IT.SCOM.ASB.Queue.Monitoring.DS">
+              <IntervalSeconds>$Config/IntervalSeconds$</IntervalSeconds>
+              <TimeoutSeconds>$Config/TimeoutSeconds$</TimeoutSeconds>
+            </DataSource>
+            <ConditionDetection ID="CDHealthy" TypeID="System!System.ExpressionFilter">
+              <Expression>
+                <SimpleExpression>
+                  <ValueExpression>
+                    <XPathQuery Type="Integer">Property[@Name='DeadLetterCount']</XPathQuery>
+                  </ValueExpression>
+                  <Operator>Less</Operator>
+                  <ValueExpression>
+                    <Value Type="Integer">$Config/MessageCountThreshold$</Value>
+                  </ValueExpression>
+                </SimpleExpression>
+              </Expression>
+            </ConditionDetection>
+            <ConditionDetection ID="CDCritical" TypeID="System!System.ExpressionFilter">
+              <Expression>
+                <SimpleExpression>
+                  <ValueExpression>
+                    <XPathQuery Type="String">Property[@Name='DeadLetterCount']</XPathQuery>
+                  </ValueExpression>
+                  <Operator>GreaterEqual</Operator>
+                  <ValueExpression>
+                    <Value Type="Integer">$Config/MessageCountThreshold$</Value>
+                  </ValueExpression>
+                </SimpleExpression>
+              </Expression>
+            </ConditionDetection>
+          </MemberModules>
+          <RegularDetections>
+            <RegularDetection MonitorTypeStateID="Healthy">
+              <Node ID="CDHealthy">
+                <Node ID="QueueProbe" />
+              </Node>
+            </RegularDetection>
+            <RegularDetection MonitorTypeStateID="Critical">
+              <Node ID="CDCritical">
+                <Node ID="QueueProbe" />
+              </Node>
+            </RegularDetection>
+          </RegularDetections>
+        </MonitorImplementation>
+      </UnitMonitorType>
+      <UnitMonitorType ID="Microsoft.IT.SCOM.ASB.Topic.Monitor.Enabled.MonitorType" Accessibility="Internal" >
+        <MonitorTypeStates>
+          <MonitorTypeState ID="Healthy" NoDetection="false" />
+          <MonitorTypeState ID="Warning" NoDetection="false" />
+          <MonitorTypeState ID="Critical" NoDetection="false" />
+        </MonitorTypeStates>
+        <Configuration>
+          <xsd:element minOccurs="0" maxOccurs="1" name="IntervalSeconds" type="xsd:integer" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="TimeoutSeconds" type="xsd:integer" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="SyncTime" type="xsd:string" />
+        </Configuration>
+        <OverrideableParameters>
+          <OverrideableParameter ID="IntervalSeconds" Selector="$Config/IntervalSeconds$" ParameterType="int" />
+          <OverrideableParameter ID="TimeoutSeconds" Selector="$Config/TimeoutSeconds$" ParameterType="int" />
+        </OverrideableParameters>
+        <MonitorImplementation>
+          <MemberModules>
+            <DataSource ID="QueueProbe" TypeID="Microsoft.IT.SCOM.ASB.Topic.Monitoring.DS">
+              <IntervalSeconds>$Config/IntervalSeconds$</IntervalSeconds>
+              <TimeoutSeconds>$Config/TimeoutSeconds$</TimeoutSeconds>
+            </DataSource>
+            <ConditionDetection ID="CDHealthy" TypeID="System!System.ExpressionFilter">
+              <Expression>
+                <SimpleExpression>
+                  <ValueExpression>
+                    <XPathQuery Type="String">Property[@Name='Status']</XPathQuery>
+                  </ValueExpression>
+                  <Operator>Equal</Operator>
+                  <ValueExpression>
+                    <Value Type="String">Active</Value>
+                  </ValueExpression>
+                </SimpleExpression>
+              </Expression>
+            </ConditionDetection>
+            <ConditionDetection ID="CDWarning" TypeID="System!System.ExpressionFilter">
+              <Expression>
+                <SimpleExpression>
+                  <ValueExpression>
+                    <XPathQuery Type="String">Property[@Name='Status']</XPathQuery>
+                  </ValueExpression>
+                  <Operator>Equal</Operator>
+                  <ValueExpression>
+                    <Value Type="String">SendDisabled</Value>
+                  </ValueExpression>
+                </SimpleExpression>
+              </Expression>
+            </ConditionDetection>
+            <ConditionDetection ID="CDCritical" TypeID="System!System.ExpressionFilter">
+              <Expression>
+                <SimpleExpression>
+                  <ValueExpression>
+                    <XPathQuery Type="String">Property[@Name='Status']</XPathQuery>
+                  </ValueExpression>
+                  <Operator>Equal</Operator>
+                  <ValueExpression>
+                    <Value Type="String">Disabled</Value>
+                  </ValueExpression>
+                </SimpleExpression>
+              </Expression>
+            </ConditionDetection>
+          </MemberModules>
+          <RegularDetections>
+            <RegularDetection MonitorTypeStateID="Healthy">
+              <Node ID="CDHealthy">
+                <Node ID="QueueProbe" />
+              </Node>
+            </RegularDetection>
+            <RegularDetection MonitorTypeStateID="Warning">
+              <Node ID="CDWarning">
+                <Node ID="QueueProbe" />
+              </Node>
+            </RegularDetection>
+            <RegularDetection MonitorTypeStateID="Critical">
+              <Node ID="CDCritical">
+                <Node ID="QueueProbe" />
+              </Node>
+            </RegularDetection>
+          </RegularDetections>
+        </MonitorImplementation>
+      </UnitMonitorType>
+      <UnitMonitorType ID="Microsoft.IT.SCOM.ASB.Topic.Monitor.SubCount.MonitorType" Accessibility="Internal" >
+        <MonitorTypeStates>
+          <MonitorTypeState ID="Healthy" NoDetection="false" />
+          <MonitorTypeState ID="Warning" NoDetection="false" />
+        </MonitorTypeStates>
+        <Configuration>
+          <xsd:element minOccurs="0" maxOccurs="1" name="IntervalSeconds" type="xsd:integer" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="TimeoutSeconds" type="xsd:integer" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="SubscriptionCount" type="xsd:integer" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="SyncTime" type="xsd:string" />
+        </Configuration>
+        <OverrideableParameters>
+          <OverrideableParameter ID="IntervalSeconds" Selector="$Config/IntervalSeconds$" ParameterType="int" />
+          <OverrideableParameter ID="TimeoutSeconds" Selector="$Config/TimeoutSeconds$" ParameterType="int" />
+          <OverrideableParameter ID="SubscriptionCount" Selector="$Config/SubscriptionCount$" ParameterType="int" />
+        </OverrideableParameters>
+        <MonitorImplementation>
+          <MemberModules>
+            <DataSource ID="QueueProbe" TypeID="Microsoft.IT.SCOM.ASB.Topic.Monitoring.DS">
+              <IntervalSeconds>$Config/IntervalSeconds$</IntervalSeconds>
+              <TimeoutSeconds>$Config/TimeoutSeconds$</TimeoutSeconds>
+            </DataSource>
+            <ConditionDetection ID="CDHealthy" TypeID="System!System.ExpressionFilter">
+              <Expression>
+                <SimpleExpression>
+                  <ValueExpression>
+                    <XPathQuery Type="Integer">Property[@Name='SubscriptionCount']</XPathQuery>
+                  </ValueExpression>
+                  <Operator>Equal</Operator>
+                  <ValueExpression>
+                    <Value Type="Integer">$Config/SubscriptionCount$</Value>
+                  </ValueExpression>
+                </SimpleExpression>
+              </Expression>
+            </ConditionDetection>
+            <ConditionDetection ID="CDWarning" TypeID="System!System.ExpressionFilter">
+              <Expression>
+                <SimpleExpression>
+                  <ValueExpression>
+                    <XPathQuery Type="Integer">Property[@Name='SubscriptionCount']</XPathQuery>
+                  </ValueExpression>
+                  <Operator>NotEqual</Operator>
+                  <ValueExpression>
+                    <Value Type="Integer">$Config/SubscriptionCount$</Value>
+                  </ValueExpression>
+                </SimpleExpression>
+              </Expression>
+            </ConditionDetection>
+          </MemberModules>
+          <RegularDetections>
+            <RegularDetection MonitorTypeStateID="Healthy">
+              <Node ID="CDHealthy">
+                <Node ID="QueueProbe" />
+              </Node>
+            </RegularDetection>
+            <RegularDetection MonitorTypeStateID="Warning">
+              <Node ID="CDWarning">
+                <Node ID="QueueProbe" />
+              </Node>
+            </RegularDetection>
+          </RegularDetections>
+        </MonitorImplementation>
+      </UnitMonitorType>
+      <UnitMonitorType ID="Microsoft.IT.SCOM.ASB.Subscription.Monitor.Enabled.MonitorType" Accessibility="Internal" >
+        <MonitorTypeStates>
+          <MonitorTypeState ID="Healthy" NoDetection="false" />
+          <MonitorTypeState ID="Warning" NoDetection="false" />
+          <MonitorTypeState ID="Critical" NoDetection="false" />
+        </MonitorTypeStates>
+        <Configuration>
+          <xsd:element minOccurs="0" maxOccurs="1" name="IntervalSeconds" type="xsd:integer" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="TimeoutSeconds" type="xsd:integer" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="SyncTime" type="xsd:string" />
+        </Configuration>
+        <OverrideableParameters>
+          <OverrideableParameter ID="IntervalSeconds" Selector="$Config/IntervalSeconds$" ParameterType="int" />
+          <OverrideableParameter ID="TimeoutSeconds" Selector="$Config/TimeoutSeconds$" ParameterType="int" />
+        </OverrideableParameters>
+        <MonitorImplementation>
+          <MemberModules>
+            <DataSource ID="QueueProbe" TypeID="Microsoft.IT.SCOM.ASB.Subscription.Monitoring.DS">
+              <IntervalSeconds>$Config/IntervalSeconds$</IntervalSeconds>
+              <TimeoutSeconds>$Config/TimeoutSeconds$</TimeoutSeconds>
+            </DataSource>
+            <ConditionDetection ID="CDHealthy" TypeID="System!System.ExpressionFilter">
+              <Expression>
+                <SimpleExpression>
+                  <ValueExpression>
+                    <XPathQuery Type="String">Property[@Name='Status']</XPathQuery>
+                  </ValueExpression>
+                  <Operator>Equal</Operator>
+                  <ValueExpression>
+                    <Value Type="String">Active</Value>
+                  </ValueExpression>
+                </SimpleExpression>
+              </Expression>
+            </ConditionDetection>
+            <ConditionDetection ID="CDWarning" TypeID="System!System.ExpressionFilter">
+              <Expression>
+                <SimpleExpression>
+                  <ValueExpression>
+                    <XPathQuery Type="String">Property[@Name='Status']</XPathQuery>
+                  </ValueExpression>
+                  <Operator>Equal</Operator>
+                  <ValueExpression>
+                    <Value Type="String">SendDisabled</Value>
+                  </ValueExpression>
+                </SimpleExpression>
+              </Expression>
+            </ConditionDetection>
+            <ConditionDetection ID="CDCritical" TypeID="System!System.ExpressionFilter">
+              <Expression>
+                <SimpleExpression>
+                  <ValueExpression>
+                    <XPathQuery Type="String">Property[@Name='Status']</XPathQuery>
+                  </ValueExpression>
+                  <Operator>Equal</Operator>
+                  <ValueExpression>
+                    <Value Type="String">Disabled</Value>
+                  </ValueExpression>
+                </SimpleExpression>
+              </Expression>
+            </ConditionDetection>
+          </MemberModules>
+          <RegularDetections>
+            <RegularDetection MonitorTypeStateID="Healthy">
+              <Node ID="CDHealthy">
+                <Node ID="QueueProbe" />
+              </Node>
+            </RegularDetection>
+            <RegularDetection MonitorTypeStateID="Warning">
+              <Node ID="CDWarning">
+                <Node ID="QueueProbe" />
+              </Node>
+            </RegularDetection>
+            <RegularDetection MonitorTypeStateID="Critical">
+              <Node ID="CDCritical">
+                <Node ID="QueueProbe" />
+              </Node>
+            </RegularDetection>
+          </RegularDetections>
+        </MonitorImplementation>
+      </UnitMonitorType>
+      <UnitMonitorType ID="Microsoft.IT.SCOM.ASB.Subscription.Monitor.MessageCount.MonitorType" Accessibility="Internal" >
+        <MonitorTypeStates>
+          <MonitorTypeState ID="Healthy" NoDetection="false" />
+          <MonitorTypeState ID="Critical" NoDetection="false" />
+        </MonitorTypeStates>
+        <Configuration>
+          <xsd:element minOccurs="0" maxOccurs="1" name="IntervalSeconds" type="xsd:integer" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="TimeoutSeconds" type="xsd:integer" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="MessageCountThreshold" type="xsd:integer" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="SyncTime" type="xsd:string" />
+        </Configuration>
+        <OverrideableParameters>
+          <OverrideableParameter ID="IntervalSeconds" Selector="$Config/IntervalSeconds$" ParameterType="int" />
+          <OverrideableParameter ID="TimeoutSeconds" Selector="$Config/TimeoutSeconds$" ParameterType="int" />
+          <OverrideableParameter ID="MessageCountThreshold" Selector="$Config/MessageCountThreshold$" ParameterType="int" />
+        </OverrideableParameters>
+        <MonitorImplementation>
+          <MemberModules>
+            <DataSource ID="QueueProbe" TypeID="Microsoft.IT.SCOM.ASB.Subscription.Monitoring.DS">
+              <IntervalSeconds>$Config/IntervalSeconds$</IntervalSeconds>
+              <TimeoutSeconds>$Config/TimeoutSeconds$</TimeoutSeconds>
+            </DataSource>
+            <ConditionDetection ID="CDHealthy" TypeID="System!System.ExpressionFilter">
+              <Expression>
+                <SimpleExpression>
+                  <ValueExpression>
+                    <XPathQuery Type="Integer">Property[@Name='MessageCount']</XPathQuery>
+                  </ValueExpression>
+                  <Operator>Less</Operator>
+                  <ValueExpression>
+                    <Value Type="Integer">$Config/MessageCountThreshold$</Value>
+                  </ValueExpression>
+                </SimpleExpression>
+              </Expression>
+            </ConditionDetection>
+            <ConditionDetection ID="CDCritical" TypeID="System!System.ExpressionFilter">
+              <Expression>
+                <SimpleExpression>
+                  <ValueExpression>
+                    <XPathQuery Type="Integer">Property[@Name='MessageCount']</XPathQuery>
+                  </ValueExpression>
+                  <Operator>GreaterEqual</Operator>
+                  <ValueExpression>
+                    <Value Type="Integer">$Config/MessageCountThreshold$</Value>
+                  </ValueExpression>
+                </SimpleExpression>
+              </Expression>
+            </ConditionDetection>
+          </MemberModules>
+          <RegularDetections>
+            <RegularDetection MonitorTypeStateID="Healthy">
+              <Node ID="CDHealthy">
+                <Node ID="QueueProbe" />
+              </Node>
+            </RegularDetection>
+            <RegularDetection MonitorTypeStateID="Critical">
+              <Node ID="CDCritical">
+                <Node ID="QueueProbe" />
+              </Node>
+            </RegularDetection>
+          </RegularDetections>
+        </MonitorImplementation>
+      </UnitMonitorType>
+      <UnitMonitorType ID="Microsoft.IT.SCOM.ASB.Subscription.Monitor.OldMessages.MonitorType" Accessibility="Internal" >
+        <MonitorTypeStates>
+          <MonitorTypeState ID="Healthy" NoDetection="false" />
+          <MonitorTypeState ID="Critical" NoDetection="false" />
+        </MonitorTypeStates>
+        <Configuration>
+          <xsd:element minOccurs="0" maxOccurs="1" name="IntervalSeconds" type="xsd:integer" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="TimeoutSeconds" type="xsd:integer" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="MinutesOld" type="xsd:integer" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="SyncTime" type="xsd:string" />
+        </Configuration>
+        <OverrideableParameters>
+          <OverrideableParameter ID="IntervalSeconds" Selector="$Config/IntervalSeconds$" ParameterType="int" />
+          <OverrideableParameter ID="TimeoutSeconds" Selector="$Config/TimeoutSeconds$" ParameterType="int" />
+          <OverrideableParameter ID="MinutesOld" Selector="$Config/MinutesOld$" ParameterType="int" />
+        </OverrideableParameters>
+        <MonitorImplementation>
+          <MemberModules>
+            <DataSource ID="QueueProbe" TypeID="Microsoft.IT.SCOM.ASB.Subscription.Monitoring.DS">
+              <IntervalSeconds>$Config/IntervalSeconds$</IntervalSeconds>
+              <TimeoutSeconds>$Config/TimeoutSeconds$</TimeoutSeconds>
+            </DataSource>
+            <ConditionDetection ID="CDHealthy" TypeID="System!System.ExpressionFilter">
+              <Expression>
+                <SimpleExpression>
+                  <ValueExpression>
+                    <XPathQuery Type="Integer">Property[@Name='OldMessageMinutes']</XPathQuery>
+                  </ValueExpression>
+                  <Operator>Less</Operator>
+                  <ValueExpression>
+                    <Value Type="Integer">$Config/MinutesOld$</Value>
+                  </ValueExpression>
+                </SimpleExpression>
+              </Expression>
+            </ConditionDetection>
+            <ConditionDetection ID="CDCritical" TypeID="System!System.ExpressionFilter">
+              <Expression>
+                <SimpleExpression>
+                  <ValueExpression>
+                    <XPathQuery Type="String">Property[@Name='OldMessageMinutes']</XPathQuery>
+                  </ValueExpression>
+                  <Operator>GreaterEqual</Operator>
+                  <ValueExpression>
+                    <Value Type="Integer">$Config/MinutesOld$</Value>
+                  </ValueExpression>
+                </SimpleExpression>
+              </Expression>
+            </ConditionDetection>
+          </MemberModules>
+          <RegularDetections>
+            <RegularDetection MonitorTypeStateID="Healthy">
+              <Node ID="CDHealthy">
+                <Node ID="QueueProbe" />
+              </Node>
+            </RegularDetection>
+            <RegularDetection MonitorTypeStateID="Critical">
+              <Node ID="CDCritical">
+                <Node ID="QueueProbe" />
+              </Node>
+            </RegularDetection>
+          </RegularDetections>
+        </MonitorImplementation>
+      </UnitMonitorType>
+      <UnitMonitorType ID="Microsoft.IT.SCOM.ASB.Subscription.Monitor.DeadLetterQueue.MonitorType" Accessibility="Internal" >
+        <MonitorTypeStates>
+          <MonitorTypeState ID="Healthy" NoDetection="false" />
+          <MonitorTypeState ID="Critical" NoDetection="false" />
+        </MonitorTypeStates>
+        <Configuration>
+          <xsd:element minOccurs="0" maxOccurs="1" name="IntervalSeconds" type="xsd:integer" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="TimeoutSeconds" type="xsd:integer" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="MessageCountThreshold" type="xsd:integer" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="SyncTime" type="xsd:string" />
+        </Configuration>
+        <OverrideableParameters>
+          <OverrideableParameter ID="IntervalSeconds" Selector="$Config/IntervalSeconds$" ParameterType="int" />
+          <OverrideableParameter ID="TimeoutSeconds" Selector="$Config/TimeoutSeconds$" ParameterType="int" />
+          <OverrideableParameter ID="MessageCountThreshold" Selector="$Config/MessageCountThreshold$" ParameterType="int" />
+        </OverrideableParameters>
+        <MonitorImplementation>
+          <MemberModules>
+            <DataSource ID="QueueProbe" TypeID="Microsoft.IT.SCOM.ASB.Subscription.Monitoring.DS">
+              <IntervalSeconds>$Config/IntervalSeconds$</IntervalSeconds>
+              <TimeoutSeconds>$Config/TimeoutSeconds$</TimeoutSeconds>
+            </DataSource>
+            <ConditionDetection ID="CDHealthy" TypeID="System!System.ExpressionFilter">
+              <Expression>
+                <SimpleExpression>
+                  <ValueExpression>
+                    <XPathQuery Type="Integer">Property[@Name='DeadLetterCount']</XPathQuery>
+                  </ValueExpression>
+                  <Operator>Less</Operator>
+                  <ValueExpression>
+                    <Value Type="Integer">$Config/MessageCountThreshold$</Value>
+                  </ValueExpression>
+                </SimpleExpression>
+              </Expression>
+            </ConditionDetection>
+            <ConditionDetection ID="CDCritical" TypeID="System!System.ExpressionFilter">
+              <Expression>
+                <SimpleExpression>
+                  <ValueExpression>
+                    <XPathQuery Type="String">Property[@Name='DeadLetterCount']</XPathQuery>
+                  </ValueExpression>
+                  <Operator>GreaterEqual</Operator>
+                  <ValueExpression>
+                    <Value Type="Integer">$Config/MessageCountThreshold$</Value>
+                  </ValueExpression>
+                </SimpleExpression>
+              </Expression>
+            </ConditionDetection>
+          </MemberModules>
+          <RegularDetections>
+            <RegularDetection MonitorTypeStateID="Healthy">
+              <Node ID="CDHealthy">
+                <Node ID="QueueProbe" />
+              </Node>
+            </RegularDetection>
+            <RegularDetection MonitorTypeStateID="Critical">
+              <Node ID="CDCritical">
+                <Node ID="QueueProbe" />
+              </Node>
+            </RegularDetection>
+          </RegularDetections>
+        </MonitorImplementation>
+      </UnitMonitorType>
+    </MonitorTypes>
+  </TypeDefinitions>
+  <Monitoring>
+    <Monitors>
+      <UnitMonitor ID="Microsoft.IT.SCOM.ASB.Queue.Monitor.Enabled" Accessibility="Public" Target="Microsoft.IT.SCOM.ASB.Queue" TypeID="Microsoft.IT.SCOM.ASB.Queue.Monitor.Enabled.MonitorType" ParentMonitorID="Health!System.Health.AvailabilityState" Enabled="true">
+        <Category>AvailabilityHealth</Category>
+        <AlertSettings AlertMessage="Microsoft.IT.SCOM.ASB.Queue.Monitor.Enabled.AlertMessage">
+          <AlertOnState>Error</AlertOnState>
+          <AutoResolve>true</AutoResolve>
+          <AlertPriority>Normal</AlertPriority>
+          <AlertSeverity>MatchMonitorHealth</AlertSeverity>
+          <AlertParameters>
+            <AlertParameter1>$Target/Property[Type="Microsoft.IT.SCOM.ASB.Queue"]/QueueName$</AlertParameter1>
+          </AlertParameters>
+        </AlertSettings>
+        <OperationalStates>
+          <OperationalState ID="Healthy" MonitorTypeStateID="Healthy" HealthState="Success" />
+          <OperationalState ID="Warning" MonitorTypeStateID="Warning" HealthState="Warning"/>
+          <OperationalState ID="Critical" MonitorTypeStateID="Critical" HealthState="Error" />
+        </OperationalStates>
+        <Configuration>
+          <IntervalSeconds>300</IntervalSeconds>
+          <TimeoutSeconds>120</TimeoutSeconds>
+        </Configuration>
+      </UnitMonitor>
+      <UnitMonitor ID="Microsoft.IT.SCOM.ASB.Queue.Monitor.MessageCount" Accessibility="Public" Target="Microsoft.IT.SCOM.ASB.Queue" TypeID="Microsoft.IT.SCOM.ASB.Queue.Monitor.MessageCount.MonitorType" ParentMonitorID="Health!System.Health.PerformanceState" Enabled="true">
+        <Category>PerformanceHealth</Category>
+        <AlertSettings AlertMessage="Microsoft.IT.SCOM.ASB.Queue.Monitor.MessageCount.AlertMessage">
+          <AlertOnState>Error</AlertOnState>
+          <AutoResolve>true</AutoResolve>
+          <AlertPriority>Normal</AlertPriority>
+          <AlertSeverity>MatchMonitorHealth</AlertSeverity>
+          <AlertParameters>
+            <AlertParameter1>$Target/Property[Type="Microsoft.IT.SCOM.ASB.Queue"]/QueueName$</AlertParameter1>
+          </AlertParameters>
+        </AlertSettings>
+        <OperationalStates>
+          <OperationalState ID="Healthy" MonitorTypeStateID="Healthy" HealthState="Success" />
+          <OperationalState ID="Critical" MonitorTypeStateID="Critical" HealthState="Error" />
+        </OperationalStates>
+        <Configuration>
+          <IntervalSeconds>300</IntervalSeconds>
+          <TimeoutSeconds>120</TimeoutSeconds>
+          <MessageCountThreshold>2</MessageCountThreshold>
+        </Configuration>
+      </UnitMonitor>
+      <UnitMonitor ID="Microsoft.IT.SCOM.ASB.Queue.Monitor.OldMessages" Accessibility="Public" Target="Microsoft.IT.SCOM.ASB.Queue" TypeID="Microsoft.IT.SCOM.ASB.Queue.Monitor.OldMessages.MonitorType" ParentMonitorID="Health!System.Health.PerformanceState" Enabled="true">
+        <Category>PerformanceHealth</Category>
+        <AlertSettings AlertMessage="Microsoft.IT.SCOM.ASB.Queue.Monitor.OldMessages.AlertMessage">
+          <AlertOnState>Error</AlertOnState>
+          <AutoResolve>true</AutoResolve>
+          <AlertPriority>Normal</AlertPriority>
+          <AlertSeverity>MatchMonitorHealth</AlertSeverity>
+          <AlertParameters>
+            <AlertParameter1>$Target/Property[Type="Microsoft.IT.SCOM.ASB.Queue"]/QueueName$</AlertParameter1>
+          </AlertParameters>
+        </AlertSettings>
+        <OperationalStates>
+          <OperationalState ID="Healthy" MonitorTypeStateID="Healthy" HealthState="Success" />
+          <OperationalState ID="Critical" MonitorTypeStateID="Critical" HealthState="Error" />
+        </OperationalStates>
+        <Configuration>
+          <IntervalSeconds>300</IntervalSeconds>
+          <TimeoutSeconds>120</TimeoutSeconds>
+          <MinutesOld>5</MinutesOld>
+        </Configuration>
+      </UnitMonitor>
+      <UnitMonitor ID="Microsoft.IT.SCOM.ASB.Queue.Monitor.DeadLetterQueue" Accessibility="Public" Target="Microsoft.IT.SCOM.ASB.Queue" TypeID="Microsoft.IT.SCOM.ASB.Queue.Monitor.DeadLetterQueue.MonitorType" ParentMonitorID="Health!System.Health.PerformanceState" Enabled="true">
+        <Category>PerformanceHealth</Category>
+        <AlertSettings AlertMessage="Microsoft.IT.SCOM.ASB.Queue.Monitor.DeadLetterQueue.AlertMessage">
+          <AlertOnState>Error</AlertOnState>
+          <AutoResolve>true</AutoResolve>
+          <AlertPriority>Normal</AlertPriority>
+          <AlertSeverity>MatchMonitorHealth</AlertSeverity>
+          <AlertParameters>
+            <AlertParameter1>$Target/Property[Type="Microsoft.IT.SCOM.ASB.Queue"]/QueueName$</AlertParameter1>
+          </AlertParameters>
+        </AlertSettings>
+        <OperationalStates>
+          <OperationalState ID="Healthy" MonitorTypeStateID="Healthy" HealthState="Success" />
+          <OperationalState ID="Critical" MonitorTypeStateID="Critical" HealthState="Error" />
+        </OperationalStates>
+        <Configuration>
+          <IntervalSeconds>300</IntervalSeconds>
+          <TimeoutSeconds>120</TimeoutSeconds>
+          <MessageCountThreshold>1</MessageCountThreshold>
+        </Configuration>
+      </UnitMonitor>
+      <UnitMonitor ID="Microsoft.IT.SCOM.ASB.Topic.Monitor.Enabled" Accessibility="Public" Target="Microsoft.IT.SCOM.ASB.Topic" TypeID="Microsoft.IT.SCOM.ASB.Topic.Monitor.Enabled.MonitorType" ParentMonitorID="Health!System.Health.AvailabilityState" Enabled="true">
+        <Category>AvailabilityHealth</Category>
+        <AlertSettings AlertMessage="Microsoft.IT.SCOM.ASB.Topic.Monitor.Enabled.AlertMessage">
+          <AlertOnState>Error</AlertOnState>
+          <AutoResolve>true</AutoResolve>
+          <AlertPriority>Normal</AlertPriority>
+          <AlertSeverity>MatchMonitorHealth</AlertSeverity>
+          <AlertParameters>
+            <AlertParameter1>$Target/Property[Type="Microsoft.IT.SCOM.ASB.Topic"]/TopicName$</AlertParameter1>
+          </AlertParameters>
+        </AlertSettings>
+        <OperationalStates>
+          <OperationalState ID="Healthy" MonitorTypeStateID="Healthy" HealthState="Success" />
+          <OperationalState ID="Warning" MonitorTypeStateID="Warning" HealthState="Warning"/>
+          <OperationalState ID="Critical" MonitorTypeStateID="Critical" HealthState="Error" />
+        </OperationalStates>
+        <Configuration>
+          <IntervalSeconds>300</IntervalSeconds>
+          <TimeoutSeconds>120</TimeoutSeconds>
+        </Configuration>
+      </UnitMonitor>
+      <UnitMonitor ID="Microsoft.IT.SCOM.ASB.Topic.Monitor.SubCount" Accessibility="Public" Target="Microsoft.IT.SCOM.ASB.Topic" TypeID="Microsoft.IT.SCOM.ASB.Topic.Monitor.SubCount.MonitorType" ParentMonitorID="Health!System.Health.AvailabilityState" Enabled="true">
+        <Category>ConfigurationHealth</Category>
+        <AlertSettings AlertMessage="Microsoft.IT.SCOM.ASB.Topic.Monitor.SubCount.AlertMessage">
+          <AlertOnState>Warning</AlertOnState>
+          <AutoResolve>true</AutoResolve>
+          <AlertPriority>Normal</AlertPriority>
+          <AlertSeverity>MatchMonitorHealth</AlertSeverity>
+          <AlertParameters>
+            <AlertParameter1>$Target/Property[Type="Microsoft.IT.SCOM.ASB.Topic"]/TopicName$</AlertParameter1>
+          </AlertParameters>
+        </AlertSettings>
+        <OperationalStates>
+          <OperationalState ID="Healthy" MonitorTypeStateID="Healthy" HealthState="Success" />
+          <OperationalState ID="Warning" MonitorTypeStateID="Warning" HealthState="Warning"/>
+        </OperationalStates>
+        <Configuration>
+          <IntervalSeconds>300</IntervalSeconds>
+          <TimeoutSeconds>120</TimeoutSeconds>
+          <SubscriptionCount>1</SubscriptionCount>
+        </Configuration>
+      </UnitMonitor>
+      <UnitMonitor ID="Microsoft.IT.SCOM.ASB.Subscription.Monitor.Enabled" Accessibility="Public" Target="Microsoft.IT.SCOM.ASB.Subscription" TypeID="Microsoft.IT.SCOM.ASB.Subscription.Monitor.Enabled.MonitorType" ParentMonitorID="Health!System.Health.AvailabilityState" Enabled="true">
+        <Category>AvailabilityHealth</Category>
+        <AlertSettings AlertMessage="Microsoft.IT.SCOM.ASB.Subscription.Monitor.Enabled.AlertMessage">
+          <AlertOnState>Error</AlertOnState>
+          <AutoResolve>true</AutoResolve>
+          <AlertPriority>Normal</AlertPriority>
+          <AlertSeverity>MatchMonitorHealth</AlertSeverity>
+          <AlertParameters>
+            <AlertParameter1>$Target/Property[Type="Microsoft.IT.SCOM.ASB.Subscription"]/SubscriptionName$</AlertParameter1>
+          </AlertParameters>
+        </AlertSettings>
+        <OperationalStates>
+          <OperationalState ID="Healthy" MonitorTypeStateID="Healthy" HealthState="Success" />
+          <OperationalState ID="Warning" MonitorTypeStateID="Warning" HealthState="Warning"/>
+          <OperationalState ID="Critical" MonitorTypeStateID="Critical" HealthState="Error" />
+        </OperationalStates>
+        <Configuration>
+          <IntervalSeconds>300</IntervalSeconds>
+          <TimeoutSeconds>120</TimeoutSeconds>
+        </Configuration>
+      </UnitMonitor>
+      <UnitMonitor ID="Microsoft.IT.SCOM.ASB.Subscription.Monitor.MessageCount" Accessibility="Public" Target="Microsoft.IT.SCOM.ASB.Subscription" TypeID="Microsoft.IT.SCOM.ASB.Subscription.Monitor.MessageCount.MonitorType" ParentMonitorID="Health!System.Health.PerformanceState" Enabled="true">
+        <Category>PerformanceHealth</Category>
+        <AlertSettings AlertMessage="Microsoft.IT.SCOM.ASB.Subscription.Monitor.MessageCount.AlertMessage">
+          <AlertOnState>Error</AlertOnState>
+          <AutoResolve>true</AutoResolve>
+          <AlertPriority>Normal</AlertPriority>
+          <AlertSeverity>MatchMonitorHealth</AlertSeverity>
+          <AlertParameters>
+            <AlertParameter1>$Target/Property[Type="Microsoft.IT.SCOM.ASB.Subscription"]/SubscriptionName$</AlertParameter1>
+          </AlertParameters>
+        </AlertSettings>
+        <OperationalStates>
+          <OperationalState ID="Healthy" MonitorTypeStateID="Healthy" HealthState="Success" />
+          <OperationalState ID="Critical" MonitorTypeStateID="Critical" HealthState="Error" />
+        </OperationalStates>
+        <Configuration>
+          <IntervalSeconds>300</IntervalSeconds>
+          <TimeoutSeconds>120</TimeoutSeconds>
+          <MessageCountThreshold>2</MessageCountThreshold>
+        </Configuration>
+      </UnitMonitor>
+      <UnitMonitor ID="Microsoft.IT.SCOM.ASB.Subscription.Monitor.OldMessages" Accessibility="Public" Target="Microsoft.IT.SCOM.ASB.Subscription" TypeID="Microsoft.IT.SCOM.ASB.Subscription.Monitor.OldMessages.MonitorType" ParentMonitorID="Health!System.Health.PerformanceState" Enabled="true">
+        <Category>PerformanceHealth</Category>
+        <AlertSettings AlertMessage="Microsoft.IT.SCOM.ASB.Subscription.Monitor.OldMessages.AlertMessage">
+          <AlertOnState>Error</AlertOnState>
+          <AutoResolve>true</AutoResolve>
+          <AlertPriority>Normal</AlertPriority>
+          <AlertSeverity>MatchMonitorHealth</AlertSeverity>
+          <AlertParameters>
+            <AlertParameter1>$Target/Property[Type="Microsoft.IT.SCOM.ASB.Subscription"]/SubscriptionName$</AlertParameter1>
+          </AlertParameters>
+        </AlertSettings>
+        <OperationalStates>
+          <OperationalState ID="Healthy" MonitorTypeStateID="Healthy" HealthState="Success" />
+          <OperationalState ID="Critical" MonitorTypeStateID="Critical" HealthState="Error" />
+        </OperationalStates>
+        <Configuration>
+          <IntervalSeconds>300</IntervalSeconds>
+          <TimeoutSeconds>120</TimeoutSeconds>
+          <MinutesOld>5</MinutesOld>
+        </Configuration>
+      </UnitMonitor>
+      <UnitMonitor ID="Microsoft.IT.SCOM.ASB.Subscription.Monitor.DeadLetterQueue" Accessibility="Public" Target="Microsoft.IT.SCOM.ASB.Subscription" TypeID="Microsoft.IT.SCOM.ASB.Subscription.Monitor.DeadLetterQueue.MonitorType" ParentMonitorID="Health!System.Health.PerformanceState" Enabled="true">
+        <Category>PerformanceHealth</Category>
+        <AlertSettings AlertMessage="Microsoft.IT.SCOM.ASB.Subscription.Monitor.DeadLetterQueue.AlertMessage">
+          <AlertOnState>Error</AlertOnState>
+          <AutoResolve>true</AutoResolve>
+          <AlertPriority>Normal</AlertPriority>
+          <AlertSeverity>MatchMonitorHealth</AlertSeverity>
+          <AlertParameters>
+            <AlertParameter1>$Target/Property[Type="Microsoft.IT.SCOM.ASB.Subscription"]/SubscriptionName$</AlertParameter1>
+          </AlertParameters>
+        </AlertSettings>
+        <OperationalStates>
+          <OperationalState ID="Healthy" MonitorTypeStateID="Healthy" HealthState="Success" />
+          <OperationalState ID="Critical" MonitorTypeStateID="Critical" HealthState="Error" />
+        </OperationalStates>
+        <Configuration>
+          <IntervalSeconds>300</IntervalSeconds>
+          <TimeoutSeconds>120</TimeoutSeconds>
+          <MessageCountThreshold>1</MessageCountThreshold>
+        </Configuration>
+      </UnitMonitor>  
+  </Monitors>
+  </Monitoring>
+  <Presentation>
+    <StringResources>
+      <StringResource ID="Microsoft.IT.SCOM.ASB.Queue.Monitor.Enabled.AlertMessage" />
+      <StringResource ID="Microsoft.IT.SCOM.ASB.Queue.Monitor.MessageCount.AlertMessage" />
+      <StringResource ID="Microsoft.IT.SCOM.ASB.Queue.Monitor.OldMessages.AlertMessage" />
+      <StringResource ID="Microsoft.IT.SCOM.ASB.Queue.Monitor.DeadLetterQueue.AlertMessage" />
+      <StringResource ID="Microsoft.IT.SCOM.ASB.Topic.Monitor.Enabled.AlertMessage" />
+      <StringResource ID="Microsoft.IT.SCOM.ASB.Topic.Monitor.SubCount.AlertMessage" />
+      <StringResource ID="Microsoft.IT.SCOM.ASB.Subscription.Monitor.Enabled.AlertMessage" />
+      <StringResource ID="Microsoft.IT.SCOM.ASB.Subscription.Monitor.MessageCount.AlertMessage" />
+      <StringResource ID="Microsoft.IT.SCOM.ASB.Subscription.Monitor.OldMessages.AlertMessage" />
+      <StringResource ID="Microsoft.IT.SCOM.ASB.Subscription.Monitor.DeadLetterQueue.AlertMessage" />
+    </StringResources>
+  </Presentation>
+  <LanguagePacks>
+    <LanguagePack ID="ENU" IsDefault="true">
+      <DisplayStrings>
+        <DisplayString ElementID="Microsoft.IT.SCOM.ASB.Queue.Monitor.Enabled">
+          <Name>Queue is enabled</Name>
+          <Description></Description>
+        </DisplayString>
+        <DisplayString ElementID="Microsoft.IT.SCOM.ASB.Queue.Monitor.Enabled.AlertMessage">
+          <Name>Windows Azure Service Bus Queue {0} is not enabled</Name>
+          <Description>Windows Azure Service Bus Queue {0} is not enabled</Description>
+        </DisplayString>
+        <DisplayString ElementID="Microsoft.IT.SCOM.ASB.Queue.Monitor.MessageCount">
+          <Name>Acceptable message count in queue</Name>
+          <Description></Description>
+        </DisplayString>
+        <DisplayString ElementID="Microsoft.IT.SCOM.ASB.Queue.Monitor.MessageCount.AlertMessage">
+          <Name>Windows Azure Service Bus Queue {0} has too many messages in it</Name>
+          <Description>Windows Azure Service Bus Queue {0} has too many messages in it</Description>
+        </DisplayString>
+        <DisplayString ElementID="Microsoft.IT.SCOM.ASB.Queue.Monitor.OldMessages">
+          <Name>Old messages in queue</Name>
+          <Description></Description>
+        </DisplayString>
+        <DisplayString ElementID="Microsoft.IT.SCOM.ASB.Queue.Monitor.OldMessages.AlertMessage">
+          <Name>Windows Azure Service Bus Queue {0} has old messages</Name>
+          <Description>Windows Azure Service Bus Queue {0} has old messages</Description>
+        </DisplayString>
+        <DisplayString ElementID="Microsoft.IT.SCOM.ASB.Queue.Monitor.DeadLetterQueue">
+          <Name>Acceptable message count in dead letter queue</Name>
+          <Description></Description>
+        </DisplayString>
+        <DisplayString ElementID="Microsoft.IT.SCOM.ASB.Queue.Monitor.DeadLetterQueue.AlertMessage">
+          <Name>Windows Azure Service Bus Queue {0} has messages in its dead letter queue</Name>
+          <Description>Windows Azure Service Bus Queue {0} has messages in its dead letter queue</Description>
+        </DisplayString>
+        <DisplayString ElementID="Microsoft.IT.SCOM.ASB.Topic.Monitor.Enabled">
+          <Name>Topic is enabled</Name>
+          <Description></Description>
+        </DisplayString>
+        <DisplayString ElementID="Microsoft.IT.SCOM.ASB.Topic.Monitor.Enabled.AlertMessage">
+          <Name>Windows Azure Service Bus Topic {0} is not enabled</Name>
+          <Description>Windows Azure Service Bus Topic {0} is not enabled</Description>
+        </DisplayString>
+        <DisplayString ElementID="Microsoft.IT.SCOM.ASB.Topic.Monitor.SubCount">
+          <Name>Topic has correct number of subscribers</Name>
+          <Description></Description>
+        </DisplayString>
+        <DisplayString ElementID="Microsoft.IT.SCOM.ASB.Topic.Monitor.SubCount.AlertMessage">
+          <Name>Windows Azure Service Bus Topic {0} has the wrong number of subscribers</Name>
+          <Description>Windows Azure Service Bus Topic {0} has the wrong number of subscribers</Description>
+        </DisplayString>
+        <DisplayString ElementID="Microsoft.IT.SCOM.ASB.Subscription.Monitor.Enabled">
+          <Name>Subscription is enabled</Name>
+          <Description></Description>
+        </DisplayString>
+        <DisplayString ElementID="Microsoft.IT.SCOM.ASB.Subscription.Monitor.Enabled.AlertMessage">
+          <Name>Windows Azure Service Bus Subscription {0} is not enabled</Name>
+          <Description>Windows Azure Service Bus Subscription {0} is not enabled</Description>
+        </DisplayString>
+        <DisplayString ElementID="Microsoft.IT.SCOM.ASB.Subscription.Monitor.MessageCount">
+          <Name>Acceptable message count in Subscription</Name>
+          <Description></Description>
+        </DisplayString>
+        <DisplayString ElementID="Microsoft.IT.SCOM.ASB.Subscription.Monitor.MessageCount.AlertMessage">
+          <Name>Windows Azure Service Bus Subscription {0} has too many messages in it</Name>
+          <Description>Windows Azure Service Bus Subscription {0} has too many messages in it</Description>
+        </DisplayString>
+        <DisplayString ElementID="Microsoft.IT.SCOM.ASB.Subscription.Monitor.OldMessages">
+          <Name>Old messages in subscription</Name>
+          <Description></Description>
+        </DisplayString>
+        <DisplayString ElementID="Microsoft.IT.SCOM.ASB.Subscription.Monitor.OldMessages.AlertMessage">
+          <Name>Windows Azure Service Bus Subscription {0} has old messages</Name>
+          <Description>Windows Azure Service Bus Subscription {0} has old messages</Description>
+        </DisplayString>
+        <DisplayString ElementID="Microsoft.IT.SCOM.ASB.Subscription.Monitor.DeadLetterQueue">
+          <Name>Acceptable message count in dead letter queue</Name>
+          <Description></Description>
+        </DisplayString>
+        <DisplayString ElementID="Microsoft.IT.SCOM.ASB.Subscription.Monitor.DeadLetterQueue.AlertMessage">
+          <Name>Windows Azure Service Bus Subscription {0} has messages in its dead letter queue</Name>
+          <Description>Windows Azure Service Bus Subscription {0} has messages in its dead letter queue</Description>
+        </DisplayString>
+      </DisplayStrings>
+    </LanguagePack>
+  </LanguagePacks>
+</ManagementPackFragment>

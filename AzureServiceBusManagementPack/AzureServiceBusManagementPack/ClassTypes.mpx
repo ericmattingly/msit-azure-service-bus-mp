@@ -1,0 +1,84 @@
+﻿<ManagementPackFragment SchemaVersion="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <TypeDefinitions>
+    <EntityTypes>
+      <ClassTypes>
+        
+        <!-- In this section, modify the attributes based on your needs. Ensure the
+             Base attribute matches the application you are modeling.
+             More information can be found in the Management Pack Development Kit: 
+             http://msdn.microsoft.com/en-us/library/ee533867.aspx -->
+        <ClassType ID="Microsoft.IT.SCOM.ASB.Namespace" Base="System!System.Service" Accessibility="Public" Abstract="false" Hosted="false" Singleton="false">        
+          <Property ID="NamespaceName" Key="true" Type="string" />          
+        </ClassType>
+        
+        <ClassType ID="Microsoft.IT.SCOM.ASB.Queue" Base="System!System.LogicalEntity" Accessibility="Public" Abstract="false" Hosted="true" Singleton="false">
+          <Property ID="QueueName" Key="true" Type="string" />
+          <Property ID="MaxSizeInMegaBytes" Key="false" Type="int" />
+        </ClassType>
+
+        <ClassType ID="Microsoft.IT.SCOM.ASB.Topic" Base="System!System.LogicalEntity" Accessibility="Public" Abstract="false" Hosted="true" Singleton="false">
+          <Property ID="TopicName" Key="true" Type="string" />
+          <Property ID="MaxSizeInMegaBytes" Key="false" Type="int" />
+        </ClassType>
+
+        <ClassType ID="Microsoft.IT.SCOM.ASB.Subscription" Base="System!System.LogicalEntity" Accessibility="Public" Abstract="false" Hosted="true" Singleton="false">
+          <Property ID="SubscriptionName" Key="true" Type="string" />
+        </ClassType>
+      
+      </ClassTypes>
+    </EntityTypes>
+  </TypeDefinitions>
+  <LanguagePacks>
+    <LanguagePack ID="ENU" IsDefault="true">
+      <DisplayStrings>
+        
+        <!-- This is the string users of the Operations Console and Web Console will see. 
+             Descriptions are also helpful when the user is doing a search in the Console. -->
+        <DisplayString ElementID="Microsoft.IT.SCOM.ASB.Namespace">
+          <Name>Windows Azure Service Bus Namespace</Name>
+          <Description></Description>
+        </DisplayString>
+        <DisplayString ElementID="Microsoft.IT.SCOM.ASB.Namespace" SubElementID="NamespaceName">
+          <Name>Name</Name>
+          <Description></Description>
+        </DisplayString>
+
+        <DisplayString ElementID="Microsoft.IT.SCOM.ASB.Queue">
+          <Name>Windows Azure Service Bus Queue</Name>
+          <Description></Description>
+        </DisplayString>
+        <DisplayString ElementID="Microsoft.IT.SCOM.ASB.Queue" SubElementID="QueueName">
+          <Name>Name</Name>
+          <Description></Description>
+        </DisplayString>
+        <DisplayString ElementID="Microsoft.IT.SCOM.ASB.Queue" SubElementID="MaxSizeInMegaBytes">
+          <Name>Max Size in Megabytes</Name>
+          <Description></Description>
+        </DisplayString>
+
+        <DisplayString ElementID="Microsoft.IT.SCOM.ASB.Topic">
+          <Name>Windows Azure Service Bus Topic</Name>
+          <Description></Description>
+        </DisplayString>
+        <DisplayString ElementID="Microsoft.IT.SCOM.ASB.Topic" SubElementID="TopicName">
+          <Name>Name</Name>
+          <Description></Description>
+        </DisplayString>
+        <DisplayString ElementID="Microsoft.IT.SCOM.ASB.Topic" SubElementID="MaxSizeInMegaBytes">
+          <Name>Max Size in Megabytes</Name>
+          <Description></Description>
+        </DisplayString>
+
+        <DisplayString ElementID="Microsoft.IT.SCOM.ASB.Subscription">
+          <Name>Windows Azure Service Bus Subscription</Name>
+          <Description></Description>
+        </DisplayString>
+        <DisplayString ElementID="Microsoft.IT.SCOM.ASB.Subscription" SubElementID="SubscriptionName">
+          <Name>Name</Name>
+          <Description></Description>
+        </DisplayString>
+        
+      </DisplayStrings>
+    </LanguagePack>
+  </LanguagePacks>
+</ManagementPackFragment>

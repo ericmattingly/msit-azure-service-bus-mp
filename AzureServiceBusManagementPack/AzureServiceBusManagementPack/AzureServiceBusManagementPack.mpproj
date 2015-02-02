@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <ProjectGuid>{e927431d-07e0-4a3f-be95-384edd2af4fd}</ProjectGuid>
+    <RootNamespace>Microsoft.IT.SCOM.ASB</RootNamespace>
+    <Name>Microsoft IT - Windows Azure Service Bus Management Pack</Name>
+    <ManagementPackName>Microsoft.IT.SCOM.ASB</ManagementPackName>
+    <Version>1.1.0.0</Version>
+    <MpFrameworkVersion>v7.0.2</MpFrameworkVersion>
+    <MpFrameworkProfile>OM</MpFrameworkProfile>
+    <ProductVersion>1.1.0.0</ProductVersion>
+    <SccProjectName>SAK</SccProjectName>
+    <SccProvider>SAK</SccProvider>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccLocalPath>SAK</SccLocalPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <GenerateSealed>True</GenerateSealed>
+    <Company>Microsoft IT</Company>
+    <Copyright>Copyright (c) Microsoft IT.  All rights reserved.</Copyright>
+    <DelaySigning>False</DelaySigning>
+    <AssemblyOriginatorKeyFile>C:\Users\erimat\Source\Workspaces\MSITASBMP\AzureServiceBusManagementPack\AzureServiceBusManagementPack\key.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>false</DebugSymbols>
+    <OutputPath>bin\Release\</OutputPath>
+    <DelaySigning>false</DelaySigning>
+    <Company>MyCompany</Company>
+    <Copyright>Copyright (c) MyCompany. All rights reserved.</Copyright>
+    <DelaySign>false</DelaySign>
+    <AssemblyOriginatorKeyFile />
+  </PropertyGroup>
+  <ItemGroup>
+    <ManagementPackReference Include="Microsoft.SystemCenter.Library">
+      <Alias>SC</Alias>
+      <PackageToBundle>false</PackageToBundle>
+    </ManagementPackReference>
+    <ManagementPackReference Include="Microsoft.SystemCenter.OperationsManager.Library">
+      <HintPath>C:\Program Files (x86)\System Center 2012 Visual Studio Authoring Extensions\References\OM2012R2\Microsoft.SystemCenter.OperationsManager.Library.mp</HintPath>
+      <Alias>OM</Alias>
+      <MinVersion>7.1.10226.0</MinVersion>
+      <PackageToBundle>False</PackageToBundle>
+    </ManagementPackReference>
+    <ManagementPackReference Include="Microsoft.Windows.Library">
+      <Alias>Windows</Alias>
+      <PackageToBundle>False</PackageToBundle>
+    </ManagementPackReference>
+    <ManagementPackReference Include="System.Health.Library">
+      <Alias>Health</Alias>
+      <PackageToBundle>False</PackageToBundle>
+    </ManagementPackReference>
+    <ManagementPackReference Include="System.Library">
+      <Alias>System</Alias>
+      <PackageToBundle>false</PackageToBundle>
+    </ManagementPackReference>
+    <ManagementPackReference Include="Microsoft.SystemCenter.Visualization.Library">
+      <Alias>Visualization</Alias>
+      <PackageToBundle>false</PackageToBundle>
+    </ManagementPackReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Scripts" />
+    <Folder Include="Resources" />
+    <Folder Include="Scripts\Topic" />
+    <Folder Include="Scripts\Subscription" />
+    <Folder Include="Scripts\Queue" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Categories.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClassTypes.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="FoldersAndViews.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Groups.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ManagementPack.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ModuleTypes.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Monitors.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PresentationTypes.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Relationships.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Resources.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SecureReferences.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Templates.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Microsoft.IT.SCOM.ASB.UI.dll">
+      <SubType>Content</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Microsoft.ServiceBus.dll">
+      <SubType>Content</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Scripts\Queue\QueueDiscovery.ps1" />
+    <EmbeddedResource Include="Scripts\Queue\QueueMonitoring.ps1" />
+    <EmbeddedResource Include="Scripts\Subscription\SubscriptionDiscovery.ps1" />
+    <EmbeddedResource Include="Scripts\Subscription\SubscriptionMonitoring.ps1" />
+    <EmbeddedResource Include="Scripts\Topic\TopicDiscovery.ps1" />
+    <EmbeddedResource Include="Scripts\Topic\TopicMonitoring.ps1" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\VSAC\Microsoft.SystemCenter.OperationsManager.targets" />
+</Project>

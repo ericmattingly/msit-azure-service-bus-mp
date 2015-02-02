@@ -1,0 +1,51 @@
+﻿<ManagementPackFragment SchemaVersion="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <TypeDefinitions>
+    <EntityTypes>
+      <ClassTypes>
+
+        <!-- In this section, you can edit the Base attribute to derive from other non-generic
+             group types. Depending on your requirements and how you or your users will use this
+             group, you may need to populate this group with instances by creating a Discovery
+             that uses a script or the GroupPopulator module: http://msdn.microsoft.com/en-us/library/ff472328.aspx -->
+        <ClassType ID="Microsoft.IT.SCOM.ASB.NamespaceGroup" Accessibility="Public" Base="System!System.Group" Abstract="false" Hosted="false" Singleton="true" Extension="false" />
+      </ClassTypes>
+      <RelationshipTypes>
+        <RelationshipType ID="Microsoft.IT.SCOM.ASB.NamespaceGroupContainsNamespace" Accessibility="Public" Abstract="false" Base="System!System.Containment">
+          <Source ID="Source" MinCardinality="0" MaxCardinality="2147483647" Type="Microsoft.IT.SCOM.ASB.NamespaceGroup" />
+          <Target ID="Target" MinCardinality="0" MaxCardinality="2147483647" Type="Microsoft.IT.SCOM.ASB.Namespace" />
+        </RelationshipType>
+      </RelationshipTypes>            
+    </EntityTypes>
+  </TypeDefinitions>
+  <Monitoring>
+    <Discoveries>
+      <Discovery ID="Microsoft.IT.SCOM.ASB.PopulateNamespaceGroup" Enabled="true" Target="Microsoft.IT.SCOM.ASB.NamespaceGroup" ConfirmDelivery="false" Remotable="true" Priority="Normal">
+        <Category>Discovery</Category>
+         <DiscoveryTypes>
+          <DiscoveryRelationship TypeID="Microsoft.IT.SCOM.ASB.NamespaceGroupContainsNamespace" />
+        </DiscoveryTypes>
+         <DataSource ID="DS" TypeID="SC!Microsoft.SystemCenter.GroupPopulator">
+          <RuleId>$MPElement$</RuleId>
+          <GroupInstanceId>$Target/Id$</GroupInstanceId>
+           <MembershipRules>
+             <MembershipRule>
+              <MonitoringClass>$MPElement[Name="Microsoft.IT.SCOM.ASB.Namespace"]$</MonitoringClass>
+              <RelationshipClass>$MPElement[Name="Microsoft.IT.SCOM.ASB.NamespaceGroupContainsNamespace"]$</RelationshipClass>
+            </MembershipRule>
+          </MembershipRules>
+        </DataSource>
+      </Discovery>
+    </Discoveries>
+  </Monitoring>
+  <LanguagePacks>
+    <LanguagePack ID="ENU" IsDefault="true">
+      <DisplayStrings>
+        <!-- The name of the group that will appear to users in the console. -->
+        <DisplayString ElementID="Microsoft.IT.SCOM.ASB.NamespaceGroup">
+          <Name>Windows Azure Service Bus Namespace Group</Name>
+          <Description></Description>
+        </DisplayString>
+      </DisplayStrings>
+    </LanguagePack>
+  </LanguagePacks>
+</ManagementPackFragment>
