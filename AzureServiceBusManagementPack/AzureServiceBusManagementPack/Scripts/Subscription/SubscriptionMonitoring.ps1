@@ -1,4 +1,4 @@
-﻿param($namespaceName, $password, $assemblyLocation, $topicName, $subscriptionName, $minutesOld)
+﻿param($namespaceName, $password, $assemblyLocation, $topicName, $subscriptionName)
 
 $api = New-Object -comObject 'MOM.ScriptAPI'
 
@@ -30,12 +30,12 @@ foreach($message in $peekedMessages){
 		$oldestDate = $messDate;
 	}
 }
-$oldCount = ([System.DateTime]::UtcNow - $oldestDate)::Minutes
+$oldCount = [System.Convert]::ToInt32(([System.DateTime]::UtcNow - $oldestDate).TotalMinutes)
 
 $bag.AddValue("OldMessageMinutes", $oldCount)
 
 
-$dlClient = [Microsoft.ServiceBus.Messaging.SubscriptionClient]::CreateFromConnectionString($conn, [Microsoft.ServiceBus.Messaging.SubscriptionClient]::FormatDeadLetterPath($topicName, $subscriptionName));
+$dlClient = [Microsoft.ServiceBus.Messaging.SubscriptionClient]::CreateFromConnectionString($conn, $topicName, $subscriptionName + '/$DeadLetterQueue');
 [int]$deadLetterCount = $dlClient.PeekBatch(1000).Count
 $bag.AddValue("DeadLetterCount", $deadLetterCount)
 

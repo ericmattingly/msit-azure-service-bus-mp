@@ -6,7 +6,7 @@
     <RootNamespace>Microsoft.IT.SCOM.ASB</RootNamespace>
     <Name>Microsoft IT - Windows Azure Service Bus Management Pack</Name>
     <ManagementPackName>Microsoft.IT.SCOM.ASB</ManagementPackName>
-    <Version>1.1.0.0</Version>
+    <Version>1.1.1.2</Version>
     <MpFrameworkVersion>v7.0.2</MpFrameworkVersion>
     <MpFrameworkProfile>OM</MpFrameworkProfile>
     <ProductVersion>1.1.0.0</ProductVersion>
@@ -22,7 +22,7 @@
     <Company>Microsoft IT</Company>
     <Copyright>Copyright (c) Microsoft IT.  All rights reserved.</Copyright>
     <DelaySigning>False</DelaySigning>
-    <AssemblyOriginatorKeyFile>C:\Users\erimat\Source\Workspaces\MSITASBMP\AzureServiceBusManagementPack\AzureServiceBusManagementPack\key.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>C:\Users\erimat\Source\Workspaces\MSITSBWSMP\SBWSManagementPack\Microsoft.IT.SCOM.SBWS\key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <DebugSymbols>false</DebugSymbols>

@@ -33,7 +33,7 @@ foreach($message in $peekedMessages){
 		$oldestDate = $messDate;
 	}
 }
-$oldCount = ([System.DateTime]::UtcNow - $oldestDate)::Minutes
+$oldCount = [System.Convert]::ToInt32(([System.DateTime]::UtcNow - $oldestDate).TotalMinutes)
 
 $bag.AddValue("OldMessageMinutes", $oldCount)
 
